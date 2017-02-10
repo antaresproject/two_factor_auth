@@ -1,0 +1,16 @@
+{% extends "antares/foundation::layouts.antares.index" %}
+{% block content %}    
+    <div class="card card--padding24">
+        <div class="card__header">
+            <div class="card__header-left">
+                <span>
+                    <img src="{{ icon }}" alt="Icon" width="32" height="32" />
+                    {{ title }}
+                </span>
+            </div>
+        </div>
+        <div class="card__content">
+            {{ form|raw }}
+        </div>
+    </div>
+{% endblock %}

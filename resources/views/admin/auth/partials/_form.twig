@@ -1,0 +1,36 @@
+{{ Form.open(form|merge({'class':'form--hor'}))|raw }}
+{% if(token) %}
+    {{ Form.token() }}
+{% endif %}    
+{% for hidden in hiddens %}
+    {{ hidden|raw }}
+{% endfor %}
+<div class="col-group text-center">
+    {% for fieldset in fieldsets %}
+        <fieldset>
+            {% if fieldset.name|length>0 %}
+                <legend>{{ fieldset.name }}</legend>
+            {% endif %}
+            {% for control in fieldset.controls() %}                
+                {% if control.type=='button' %}
+                    {% set submits=submits|merge([control]) %}        
+                {% else %}   
+                    <div class="col-group">
+                        <div class="form-block">
+                            {% include 'antares/two_factor_auth::admin.auth.partials._field' with {control: control} %}                            
+                        </div>
+                    </div>
+                {% endif %}
+            {%endfor %}
+        </fieldset>
+    {%endfor %}
+    {% if buttons is not empty %}
+        <div class="btn-group">
+            {% for button in buttons %}
+                {{ button.getField(row, button, [])|raw }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
+{{ Form.close()|raw }}

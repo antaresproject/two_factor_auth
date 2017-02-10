@@ -1,0 +1,14 @@
+{
+    "name": "components/two_factor_auth",
+    "description": "Antares Two Factor Auth Component",
+    "authors": [
+        {
+            "name": "Marcin Kozak",
+            "email": "contact@antaresproject.io"
+        }
+    ],
+    "require": {
+        "pragmarx/google2fa": "dev-master",
+        "marcinkozak/yubikey": "dev-master"
+    }
+}

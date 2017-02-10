@@ -1,0 +1,28 @@
+{% for control in controls %}
+    <fieldset class="two_factor_auth-provider-area-fieldset">
+        <div class="col-group">
+            <div class="form-block provider-area-block">
+                <div class="input-field input-field--group">
+                    <div class="col-dt-6 col-6 col-mb-6">
+                        {{ Form.label(control.name, control.label,{'class':'form-block__name'})|raw }}
+                    </div>
+                    <div class="col-dt-5 col-5 col-mb-5">
+                        <div class="form-block {{control.getBlock('class')}}" role="{{control.getBlock('role')}}">
+                            {% if control.hasWrapper %}
+                                <div class="{{ control.getWrapper('class') }}" >
+                                {% endif %}
+                                {{ control.getField(row, control, [])|raw }}
+                            </div>
+                            {% if control.hasWrapper %}
+                            </div>
+                        </div>
+                    {% endif %} 
+                </div>
+
+                <div class="col-16 card__content">
+                    <div class="grid-col provider-area-configuration-block"></div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+{%endfor %}
