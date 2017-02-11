@@ -1,5 +1,5 @@
 {
-    "name": "components/two_factor_auth",
+    "name": "antaresproject/component-two-factor-auth",
     "description": "Antares Two Factor Auth Component",
     "authors": [
         {
