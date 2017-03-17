@@ -18,28 +18,23 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth;
 
 use Antares\Foundation\Events\SecurityFormSubmitted;
 use Antares\TwoFactorAuth\Http\Handlers\SecuritySection;
 use Antares\TwoFactorAuth\Listeners\SecurityFormListener;
-use Illuminate\Routing\Router;
 use Antares\Foundation\Support\Providers\ModuleServiceProvider;
 use Antares\TwoFactorAuth\Http\Handlers\ResetUserConfig;
 use Antares\TwoFactorAuth\Http\Handlers\UserConfig;
 use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
 use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Antares\TwoFactorAuth\Http\Middleware\TwoFactorAuthMiddleware;
-use Event;
 use Illuminate\Auth\Events\Logout as LogoutEvent;
 use Antares\Acl\RoleActionList;
+use Illuminate\Routing\Router;
 use Antares\Acl\Action;
 use Antares\Model\Role;
+use Event;
 
 class TwoFactorAuthServiceProvider extends ModuleServiceProvider
 {
