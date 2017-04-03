@@ -68,7 +68,7 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
     ];
 
     /**
-     * registering component
+     * Registering component
      */
     public function register()
     {
@@ -77,10 +77,14 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
         $this->app->singleton(TwoFactorProvidersService::class);
     }
 
-    public function boot(Router $router)
+    /**
+     * Boot service provider
+     */
+    public function boot()
     {
-        parent::boot($router);
 
+        parent::boot();
+        $router               = $this->app->make(Router::class);
         $twoFaProviderService = $this->app->make(TwoFactorProvidersService::class);
         $providers            = config('antares/two_factor_auth::providers', []);
 
