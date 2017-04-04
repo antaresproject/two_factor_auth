@@ -17,31 +17,21 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
-
-
-
-
-use Illuminate\Routing\Router;
+use Antares\Routing\Router;
 
 /* @var $router Router */
 
 $router->group(['prefix' => 'two_factor_auth'], function (Router $router) {
-    $area = area();
-    //$router->get('/', 'ConfigurationController@index')->name($area . '.two_factor_auth.configuration.index');
-    $router->get('configuration/area/{area}/provider/{provider}/edit', 'ConfigurationController@edit')->name($area . '.two_factor_auth.configuration.edit');
-    $router->post('configuration/update', 'ConfigurationController@update')->name($area . '.two_factor_auth.configuration.update');
+    $router->get('configuration/area/{area}/provider/{provider}/edit', 'ConfigurationController@edit')->name('two_factor_auth.configuration.edit');
+    $router->post('configuration/update', 'ConfigurationController@update')->name('two_factor_auth.configuration.update');
 
-    $router->get('area/{area}/configuration', 'UserConfigurationController@getConfiguration')->name($area . '.two_factor_auth.get.configuration');
-    $router->any('area/{area}/verify', 'AuthController@getVerify')->name($area . '.two_factor_auth.get.verify');
-    $router->post('area/{area}/verify/check', 'AuthController@postVerify')->name($area . '.two_factor_auth.post.verify');
+    $router->get('area/{area}/configuration', 'UserConfigurationController@getConfiguration')->name('two_factor_auth.get.configuration');
+    $router->any('area/{area}/verify', 'AuthController@getVerify')->name('two_factor_auth.get.verify');
+    $router->post('area/{area}/verify/check', 'AuthController@postVerify')->name('two_factor_auth.post.verify');
 
-    $router->get('user/{user}/reset', 'UsersController@getReset')->name($area . '.two_factor_auth.user.reset');
-    $router->get('user/{user}/area/{area}/enable', 'UserConfigurationController@enable')->name($area . '.two_factor_auth.user.configuration.enable');
-    $router->get('user/{user}/area/{area}/disable', 'UserConfigurationController@disable')->name($area . '.two_factor_auth.user.configuration.disable');
-    $router->match(['GET', 'POST'], 'user/area/{area}/configuration/save', 'UserConfigurationController@postConfiguration')->name($area . '.two_factor_auth.user.post.configuration');
-
-    $router->any('area/{area}/cancel', 'AuthController@cancel')->name($area . '.two_factor_auth.get.cancel');
-    //$router->get('reset/{id}', 'UsersController@getReset');
+    $router->get('user/{user}/reset', 'UsersController@getReset')->name('two_factor_auth.user.reset');
+    $router->get('user/{user}/area/{area}/enable', 'UserConfigurationController@enable')->name('two_factor_auth.user.configuration.enable');
+    $router->get('user/{user}/area/{area}/disable', 'UserConfigurationController@disable')->name('two_factor_auth.user.configuration.disable');
+    $router->match(['GET', 'POST'], 'user/area/{area}/configuration/save', 'UserConfigurationController@postConfiguration')->name('two_factor_auth.user.post.configuration');
+    $router->any('area/{area}/cancel', 'AuthController@cancel')->name('two_factor_auth.get.cancel');
 });

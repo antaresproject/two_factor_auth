@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Http\Presenters;
 
 use Antares\TwoFactorAuth\Contracts\ConfigurationPresenter as PresenterContract;
