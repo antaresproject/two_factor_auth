@@ -10,7 +10,7 @@
         }
     ],
     "extra": {
-        "class": "Antares\\Extension\\Composer\\ComponentPlugin"
+        "class": "Installer\\Composer\\Extension\\ComponentPlugin"
     },
     "require": {
         "pragmarx/google2fa": "dev-master",
