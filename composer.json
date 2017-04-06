@@ -9,10 +9,8 @@
             "email": "contact@antaresproject.io"
         }
     ],
-    "extra": {
-        "class": "Installer\\Composer\\Extension\\ComponentPlugin"
-    },
     "require": {
+        "antaresproject/component-installer-plugin": "*",
         "pragmarx/google2fa": "dev-master",
         "marcinkozak/yubikey": "dev-master"
     },
