@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Tests\Services;
 
 use Antares\Area\Contracts\AreaManagerContract;
@@ -41,7 +36,8 @@ use Antares\Area\AreaServiceProvider;
 use Mockery as m;
 use ReflectionClass;
 
-class VerificationServiceTest extends TestCase {
+class VerificationServiceTest extends TestCase
+{
 
     /**
      * @var Mockery
@@ -67,20 +63,23 @@ class VerificationServiceTest extends TestCase {
      * @var Mo0ckery
      */
     protected $urlGenerator;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         $this->addProvider(AreaServiceProvider::class);
+
 
         parent::setUp();
 
-        $this->areaManager = m::mock(AreaManagerContract::class);
+        $this->areaManager               = m::mock(AreaManagerContract::class);
         $this->twoFactorProvidersService = m::mock(TwoFactorProvidersService::class);
-        $this->userConfigRepository = m::mock(UserConfigRepositoryContract::class);
+        $this->userConfigRepository      = m::mock(UserConfigRepositoryContract::class);
         $this->userProviderConfigService = m::mock(UserProviderConfigService::class);
-        $this->urlGenerator = m::mock(UrlGenerator::class);
+        $this->urlGenerator              = m::mock(UrlGenerator::class);
     }
-    
-    public function tearDown() {
+
+    public function tearDown()
+    {
         parent::tearDown();
         m::close();
     }
@@ -88,290 +87,296 @@ class VerificationServiceTest extends TestCase {
     /**
      * @return VerificationService
      */
-    protected function getVerificationService() {
+    protected function getVerificationService()
+    {
         return new VerificationService($this->areaManager, $this->twoFactorProvidersService, $this->userConfigRepository, $this->userProviderConfigService, $this->urlGenerator);
     }
-    
-    public function testGetPathToVerificationAction() {
-        $currentArea = new Area('admin', 'Admin Area');
+
+    public function testGetPathToVerificationAction()
+    {
+
+        $currentArea = new Area('administrators', 'Admin Area');
 
         $this->areaManager
-            ->shouldReceive('getCurrentArea')
-            ->once()
-            ->andReturn($currentArea)
-            ->getMock();
+                ->shouldReceive('getCurrentArea')
+                ->once()
+                ->andReturn($currentArea)
+                ->getMock();
 
-        $this->urlGenerator
-            ->shouldReceive('route')
-            ->once()
-            ->with('admin.two_factor_auth.get.verify', ['area' => $currentArea])
-            ->andReturn( m::mock(Route::class) )
-            ->getMock();
+
+
 
         $route = $this->getVerificationService()->getPathToVerificationAction();
-
-        $this->assertInstanceOf(Route::class, $route);
+        $this->assertSame("", $route);
     }
 
-    public function testRouteBelongsToComponentWithValidName() {
-        $reflectionClass = new ReflectionClass(VerificationService::class);
+    public function testRouteBelongsToComponentWithValidName()
+    {
+        $reflectionClass  = new ReflectionClass(VerificationService::class);
         $reflectionMethod = $reflectionClass->getMethod('routeBelongsToComponent');
         $reflectionMethod->setAccessible(true);
 
         $route = m::mock(Route::class)
-            ->shouldReceive('getName')
-            ->once()
-            ->andReturn('two_factor_auth.some')
-            ->getMock();
+                ->shouldReceive('getName')
+                ->once()
+                ->andReturn('two_factor_auth.some')
+                ->getMock();
 
         $results = $reflectionMethod->invoke($this->getVerificationService(), $route);
 
         $this->assertTrue($results);
     }
 
-    public function testRouteBelongsToComponentWithInvalidName() {
-        $reflectionClass = new ReflectionClass(VerificationService::class);
+    public function testRouteBelongsToComponentWithInvalidName()
+    {
+        $reflectionClass  = new ReflectionClass(VerificationService::class);
         $reflectionMethod = $reflectionClass->getMethod('routeBelongsToComponent');
         $reflectionMethod->setAccessible(true);
 
         $route = m::mock(Route::class)
-            ->shouldReceive('getName')
-            ->once()
-            ->andReturn('some.route.name')
-            ->getMock();
+                ->shouldReceive('getName')
+                ->once()
+                ->andReturn('some.route.name')
+                ->getMock();
 
         $results = $reflectionMethod->invoke($this->getVerificationService(), $route);
 
         $this->assertFalse($results);
     }
 
-    public function testMustBeVerifiedAsGuest() {
+    public function testMustBeVerifiedAsGuest()
+    {
         $route = m::mock(Route::class);
 
         $guard = m::mock(Guard::class)
-            ->shouldReceive('guest')
-            ->once()
-            ->andReturn(true)
-            ->getMock();
+                ->shouldReceive('guest')
+                ->once()
+                ->andReturn(true)
+                ->getMock();
 
         $authStore = m::mock(AuthStore::class)
-            ->shouldReceive('unverify')
-            ->once()
-            ->andReturnNull()
-            ->getMock();
+                ->shouldReceive('unverify')
+                ->once()
+                ->andReturnNull()
+                ->getMock();
 
         $this->twoFactorProvidersService
-            ->shouldReceive('getAuthStore')
-            ->once()
-            ->andReturn($authStore)
-            ->getMock();
+                ->shouldReceive('getAuthStore')
+                ->once()
+                ->andReturn($authStore)
+                ->getMock();
 
         $this->assertFalse($this->getVerificationService()->mustBeVerified($route, $guard));
     }
 
-    public function testMustBeVerifiedInComponentRoute() {
+    public function testMustBeVerifiedInComponentRoute()
+    {
         $route = m::mock(Route::class)
-            ->shouldReceive('getName')
-            ->once()
-            ->andReturn('two_factor_auth')
-            ->getMock();
+                ->shouldReceive('getName')
+                ->once()
+                ->andReturn('two_factor_auth')
+                ->getMock();
 
         $guard = m::mock(Guard::class)
-            ->shouldReceive('guest')
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('guest')
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $this->assertFalse($this->getVerificationService()->mustBeVerified($route, $guard));
     }
 
-    public function testMustBeVerifiedAsAlreadyVerified() {
+    public function testMustBeVerifiedAsAlreadyVerified()
+    {
         $route = m::mock(Route::class)
-            ->shouldReceive('getName')
-            ->once()
-            ->andReturn('some.route.name')
-            ->getMock();
+                ->shouldReceive('getName')
+                ->once()
+                ->andReturn('some.route.name')
+                ->getMock();
 
         $guard = m::mock(Guard::class)
-            ->shouldReceive('guest')
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('guest')
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $authStore = m::mock(AuthStore::class)
-            ->shouldReceive('isVerified')
-            ->once()
-            ->andReturn(true)
-            ->getMock();
+                ->shouldReceive('isVerified')
+                ->once()
+                ->andReturn(true)
+                ->getMock();
 
         $this->twoFactorProvidersService
-            ->shouldReceive('getAuthStore')
-            ->once()
-            ->andReturn($authStore)
-            ->getMock();
+                ->shouldReceive('getAuthStore')
+                ->once()
+                ->andReturn($authStore)
+                ->getMock();
 
         $this->assertFalse($this->getVerificationService()->mustBeVerified($route, $guard));
     }
 
-    public function testMustBeVerifiedInRequiredArea() {
+    public function testMustBeVerifiedInRequiredArea()
+    {
         $currentArea = new Area('admin', 'Admin Area');
 
         $this->areaManager
-            ->shouldReceive('getCurrentArea')
-            ->once()
-            ->andReturn($currentArea)
-            ->getMock();
+                ->shouldReceive('getCurrentArea')
+                ->once()
+                ->andReturn($currentArea)
+                ->getMock();
 
         $route = m::mock(Route::class)
-            ->shouldReceive('getName')
-            ->once()
-            ->andReturn('some.route.name')
-            ->getMock();
+                ->shouldReceive('getName')
+                ->once()
+                ->andReturn('some.route.name')
+                ->getMock();
 
         $guard = m::mock(Guard::class)
-            ->shouldReceive('guest')
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('guest')
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $authStore = m::mock(AuthStore::class)
-            ->shouldReceive('isVerified')
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('isVerified')
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $this->twoFactorProvidersService
-            ->shouldReceive('getAuthStore')
-            ->once()
-            ->andReturn($authStore)
-            ->shouldReceive('bind')
-            ->once()
-            ->andReturnSelf()
-            ->shouldReceive('isRequiredInArea')
-            ->once()
-            ->with($currentArea)
-            ->andReturn(true)
-            ->getMock();
+                ->shouldReceive('getAuthStore')
+                ->once()
+                ->andReturn($authStore)
+                ->shouldReceive('bind')
+                ->once()
+                ->andReturnSelf()
+                ->shouldReceive('isRequiredInArea')
+                ->once()
+                ->with($currentArea)
+                ->andReturn(true)
+                ->getMock();
 
         $this->assertTrue($this->getVerificationService()->mustBeVerified($route, $guard));
     }
 
-    public function testMustBeVerifiedInEnabledAreaForUser() {
+    public function testMustBeVerifiedInEnabledAreaForUser()
+    {
         $currentArea = new Area('admin', 'Admin Area');
 
         $this->areaManager
-            ->shouldReceive('getCurrentArea')
-            ->once()
-            ->andReturn($currentArea)
-            ->getMock();
+                ->shouldReceive('getCurrentArea')
+                ->once()
+                ->andReturn($currentArea)
+                ->getMock();
 
         $user = m::mock(User::class);
 
         $route = m::mock(Route::class)
-            ->shouldReceive('getName')
-            ->once()
-            ->andReturn('some.route.name')
-            ->getMock();
+                ->shouldReceive('getName')
+                ->once()
+                ->andReturn('some.route.name')
+                ->getMock();
 
         $guard = m::mock(Guard::class)
-            ->shouldReceive('guest')
-            ->once()
-            ->andReturn(false)
-            ->shouldReceive('user')
-            ->once()
-            ->andReturn($user)
-            ->getMock();
+                ->shouldReceive('guest')
+                ->once()
+                ->andReturn(false)
+                ->shouldReceive('user')
+                ->once()
+                ->andReturn($user)
+                ->getMock();
 
         $authStore = m::mock(AuthStore::class)
-            ->shouldReceive('isVerified')
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('isVerified')
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $this->twoFactorProvidersService
-            ->shouldReceive('getAuthStore')
-            ->once()
-            ->andReturn($authStore)
-            ->shouldReceive('bind')
-            ->once()
-            ->andReturnSelf()
-            ->shouldReceive('isRequiredInArea')
-            ->once()
-            ->with($currentArea)
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('getAuthStore')
+                ->once()
+                ->andReturn($authStore)
+                ->shouldReceive('bind')
+                ->once()
+                ->andReturnSelf()
+                ->shouldReceive('isRequiredInArea')
+                ->once()
+                ->with($currentArea)
+                ->andReturn(false)
+                ->getMock();
 
         $this->userProviderConfigService
-            ->shouldReceive('setUser')
-            ->once()
-            ->with($user)
-            ->andReturnSelf()
-            ->shouldReceive('hasEnabledArea')
-            ->with($currentArea)
-            ->once()
-            ->andReturn(true)
-            ->getMock();
+                ->shouldReceive('setUser')
+                ->once()
+                ->with($user)
+                ->andReturnSelf()
+                ->shouldReceive('hasEnabledArea')
+                ->with($currentArea)
+                ->once()
+                ->andReturn(true)
+                ->getMock();
 
         $this->assertTrue($this->getVerificationService()->mustBeVerified($route, $guard));
     }
 
-    public function testMustBeVerifiedInNotEnabledAreaForUser() {
+    public function testMustBeVerifiedInNotEnabledAreaForUser()
+    {
         $currentArea = new Area('admin', 'Admin Area');
 
         $this->areaManager
-            ->shouldReceive('getCurrentArea')
-            ->once()
-            ->andReturn($currentArea)
-            ->getMock();
+                ->shouldReceive('getCurrentArea')
+                ->once()
+                ->andReturn($currentArea)
+                ->getMock();
 
         $user = m::mock(User::class);
 
         $route = m::mock(Route::class)
-            ->shouldReceive('getName')
-            ->once()
-            ->andReturn('some.route.name')
-            ->getMock();
+                ->shouldReceive('getName')
+                ->once()
+                ->andReturn('some.route.name')
+                ->getMock();
 
         $guard = m::mock(Guard::class)
-            ->shouldReceive('guest')
-            ->once()
-            ->andReturn(false)
-            ->shouldReceive('user')
-            ->once()
-            ->andReturn($user)
-            ->getMock();
+                ->shouldReceive('guest')
+                ->once()
+                ->andReturn(false)
+                ->shouldReceive('user')
+                ->once()
+                ->andReturn($user)
+                ->getMock();
 
         $authStore = m::mock(AuthStore::class)
-            ->shouldReceive('isVerified')
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('isVerified')
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $this->twoFactorProvidersService
-            ->shouldReceive('getAuthStore')
-            ->once()
-            ->andReturn($authStore)
-            ->shouldReceive('bind')
-            ->once()
-            ->andReturnSelf()
-            ->shouldReceive('isRequiredInArea')
-            ->once()
-            ->with($currentArea)
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('getAuthStore')
+                ->once()
+                ->andReturn($authStore)
+                ->shouldReceive('bind')
+                ->once()
+                ->andReturnSelf()
+                ->shouldReceive('isRequiredInArea')
+                ->once()
+                ->with($currentArea)
+                ->andReturn(false)
+                ->getMock();
 
         $this->userProviderConfigService
-            ->shouldReceive('setUser')
-            ->once()
-            ->with($user)
-            ->andReturnSelf()
-            ->shouldReceive('hasEnabledArea')
-            ->with($currentArea)
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('setUser')
+                ->once()
+                ->with($user)
+                ->andReturnSelf()
+                ->shouldReceive('hasEnabledArea')
+                ->with($currentArea)
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $this->assertFalse($this->getVerificationService()->mustBeVerified($route, $guard));
     }
-    
+
 }

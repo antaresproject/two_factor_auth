@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Tests\Processor;
 
 use Antares\Model\User;
@@ -31,11 +26,8 @@ use Antares\TwoFactorAuth\Model\UserConfig;
 use Mockery as m;
 use Antares\Testing\TestCase;
 use Antares\TwoFactorAuth\Processor\UserConfigurationProcessor;
-use Antares\TwoFactorAuth\Http\Presenters\ConfigurationPresenter;
 use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Contracts\ConfigurationListener;
 use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
-use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
 use Antares\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
 use Antares\TwoFactorAuth\Services\UserProviderConfigService;
 use Antares\Contracts\Html\Builder;
@@ -48,7 +40,8 @@ use Log;
 use Exception;
 use Antares\Area\AreaServiceProvider;
 
-class UserConfigurationProcessorTest extends TestCase {
+class UserConfigurationProcessorTest extends TestCase
+{
 
     /**
      *
@@ -96,22 +89,24 @@ class UserConfigurationProcessorTest extends TestCase {
      */
     protected $redirect;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->addProvider(AreaServiceProvider::class);
 
         parent::setUp();
 
-        $this->dispatcher                   = m::mock(Dispatcher::class);
-        $this->presenter                    = m::mock(UserConfigurationPresenter::class);
-        $this->twoFactorProvidersService    = m::mock(TwoFactorProvidersService::class)->shouldReceive('bind')->once()->andReturnSelf()->getMock();
-        $this->userProviderConfigService    = m::mock(UserProviderConfigService::class);
-        $this->userConfigRepository         = m::mock(UserConfigRepositoryContract::class);
-        $this->view                         = m::mock(View::class)->makePartial();
+        $this->dispatcher                = m::mock(Dispatcher::class);
+        $this->presenter                 = m::mock(UserConfigurationPresenter::class);
+        $this->twoFactorProvidersService = m::mock(TwoFactorProvidersService::class)->shouldReceive('bind')->once()->andReturnSelf()->getMock();
+        $this->userProviderConfigService = m::mock(UserProviderConfigService::class);
+        $this->userConfigRepository      = m::mock(UserConfigRepositoryContract::class);
+        $this->view                      = m::mock(View::class)->makePartial();
 
         $this->providersRepository = m::mock(ProvidersRepositoryContract::class);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         parent::tearDown();
         m::close();
     }
@@ -120,321 +115,319 @@ class UserConfigurationProcessorTest extends TestCase {
      *
      * @return UserConfigurationProcessor
      */
-    protected function getProcessor() {
+    protected function getProcessor()
+    {
         return new UserConfigurationProcessor($this->dispatcher, $this->presenter, $this->twoFactorProvidersService, $this->userProviderConfigService, $this->userConfigRepository);
     }
 
-    public function testIsConfigured() {
+    public function testIsConfigured()
+    {
         $area = m::mock(AreaContract::class);
 
         $this->userProviderConfigService
-            ->shouldReceive('hasConfiguredArea')
-            ->once()
-            ->with($area)
-            ->andReturnNull()
-            ->getMock();
+                ->shouldReceive('hasConfiguredArea')
+                ->once()
+                ->with($area)
+                ->andReturnNull()
+                ->getMock();
 
         $this->getProcessor()->isConfigured($area);
     }
-    
-    public function testConfigure() {
-        $area           = m::mock(AreaContract::class);
-        $returnValue    = 'return value';
-        $listener       = $this->getMockedConfigurationListener($returnValue, $area);
+
+    public function testConfigure()
+    {
+        $area        = m::mock(AreaContract::class);
+        $returnValue = 'return value';
+        $listener    = $this->getMockedConfigurationListener($returnValue, $area);
 
         $this->assertEquals($returnValue, $this->getProcessor()->configure($listener, $area));
     }
 
-    public function testMarkAsConfigured() {
-        $area       = m::mock(AreaContract::class)
-            ->shouldReceive('getLabel')
-            ->once()
-            ->andReturn(m::type('String'))
-            ->getMock();
+    public function testMarkAsConfigured()
+    {
+        $this->app->register(\Antares\TwoFactorAuth\TwoFactorAuthServiceProvider::class);
+        $area = m::mock(AreaContract::class)
+                        ->shouldReceive('getId')->once()->andReturn('administrators')->getMock();
 
-        $userConfig = m::mock(UserConfig::class);
+        $userConfig = m::mock(UserConfig::class)->shouldReceive('getAttribute')->with('settings')->once()->andReturn(['secret_key' => 123])
+                        ->shouldReceive('getId')->once()->andReturn('administrators')
+                        ->shouldReceive('getAttribute')->once()->with('configured')->andReturn(1)->getMock();
 
         $this->userProviderConfigService
-            ->shouldReceive('getSettingsByArea')
-            ->once()
-            ->with($area)
-            ->andReturn($userConfig)
-            ->shouldReceive('setAsConfigured')
-            ->once()
-            ->with($userConfig)
-            ->andReturnNull()
-            ->getMock();
+                ->shouldReceive('getSettingsByArea')->once()->with($area)->andReturn($userConfig)->getMock();
 
         $returnValue = 'return-value';
 
         $listener = m::mock(UserConfigurationListener::class)
-            ->shouldReceive('afterConfiguration')
-            ->once()
-            ->with($area, m::type('String'))
-            ->andReturn($returnValue)
-            ->getMock();
+                ->shouldReceive('afterConfiguration')
+                ->once()
+                ->with(m::type('Object'))
+                ->andReturn($returnValue)
+                ->getMock();
 
         $this->assertEquals($returnValue, $this->getProcessor()->markAsConfigured($listener, $area));
     }
 
-    public function testEnableSuccessWithConfiguredArea() {
+    public function testEnableSuccessWithConfiguredArea()
+    {
         $area = m::mock(AreaContract::class)
-            ->shouldReceive('getLabel')
-            ->once()
-            ->andReturn(m::type('String'))
-            ->getMock();
+                ->shouldReceive('getLabel')
+                ->once()
+                ->andReturn(m::type('String'))
+                ->getMock();
 
-        $userConfig = m::mock('Eloquent', UserConfig::class)
-            ->shouldReceive('getAttribute')
-            ->with('id')
-            ->once()
-            ->andReturn(1)
-            ->getMock();
+        $userConfig = m::mock('Eloquent', UserConfig::class)->shouldReceive('getAttribute')->with('id')->once()->andReturn(1)->getMock();
 
         $user = m::mock('Eloquent', User::class);
 
         $this->setupGetUserConfig($userConfig, $user, $area);
 
         $this->userProviderConfigService
-            ->shouldReceive('hasConfiguredArea')
-            ->with($area)
-            ->once()
-            ->andReturn(True)
-            ->getMock();
+                ->shouldReceive('hasConfiguredArea')
+                ->with($area)
+                ->once()
+                ->andReturn(True)
+                ->getMock();
 
         $this->userConfigRepository
-            ->shouldReceive('markAsEnabledById')
-            ->once()
-            ->andReturnNull();
+                ->shouldReceive('markAsEnabledById')
+                ->once()
+                ->andReturnNull();
 
         $returnValue = 'return-value';
 
         $listener = m::mock(UserConfigurationListener::class)
-            ->shouldReceive('afterConfiguration')
-            ->with( $area, m::type("String") )
-            ->once()
-            ->andReturn($returnValue)
-            ->getMock();
+                ->shouldReceive('afterConfiguration')
+                ->with($area, m::type("String"))
+                ->once()
+                ->andReturn($returnValue)
+                ->getMock();
 
-        $this->assertEquals($returnValue,  $this->getProcessor()->enable($listener, $user, $area));
+        $this->assertEquals($returnValue, $this->getProcessor()->enable($listener, $user, $area));
     }
 
-    public function testEnableSuccessWithNotConfiguredArea() {
+    public function testEnableSuccessWithNotConfiguredArea()
+    {
         $area = m::mock(AreaContract::class);
 
         $userConfig = m::mock('Eloquent', UserConfig::class)
-            ->shouldReceive('getAttribute')
-            ->with('id')
-            ->once()
-            ->andReturn(1)
-            ->getMock();
+                ->shouldReceive('getAttribute')
+                ->with('id')
+                ->once()
+                ->andReturn(1)
+                ->getMock();
 
         $user = m::mock('Eloquent', User::class);
 
         $this->setupGetUserConfig($userConfig, $user, $area);
 
         $this->userProviderConfigService
-            ->shouldReceive('hasConfiguredArea')
-            ->with($area)
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('hasConfiguredArea')
+                ->with($area)
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $this->userConfigRepository
-            ->shouldReceive('markAsEnabledById')
-            ->once()
-            ->andReturnNull();
+                ->shouldReceive('markAsEnabledById')
+                ->once()
+                ->andReturnNull();
 
-        $returnValue    = 'return-value';
-        $listener       = $this->getMockedConfigurationListener($returnValue, $area);
+        $returnValue = 'return-value';
+        $listener    = $this->getMockedConfigurationListener($returnValue, $area);
 
-        $this->assertEquals($returnValue,  $this->getProcessor()->enable($listener, $user, $area));
+        $this->assertEquals($returnValue, $this->getProcessor()->enable($listener, $user, $area));
     }
 
-    public function testEnableFailed() {
+    public function testEnableFailed()
+    {
         $area = m::mock(AreaContract::class)
-            ->shouldReceive('getLabel')
-            ->once()
-            ->andReturn(m::type('String'))
-            ->getMock();
+                ->shouldReceive('getLabel')
+                ->once()
+                ->andReturn(m::type('String'))
+                ->getMock();
 
         $userConfig = m::mock('Eloquent', UserConfig::class)
-            ->shouldReceive('getAttribute')
-            ->with('id')
-            ->once()
-            ->andReturn(1)
-            ->getMock();
+                ->shouldReceive('getAttribute')
+                ->with('id')
+                ->once()
+                ->andReturn(1)
+                ->getMock();
 
         $user = m::mock('Eloquent', User::class);
 
         $this->setupGetUserConfig($userConfig, $user, $area);
 
-        $exception =  m::mock(Exception::class);
+        $exception = m::mock(Exception::class);
 
         $this->userConfigRepository
-            ->shouldReceive('markAsEnabledById')
-            ->once()
-            ->andThrow($exception);
+                ->shouldReceive('markAsEnabledById')
+                ->once()
+                ->andThrow($exception);
 
         $returnValue = 'return-value';
 
         $listener = m::mock(UserConfigurationListener::class)
-            ->shouldReceive('enableFailed')
-            ->with( m::type("String") )
-            ->once()
-            ->andReturn($returnValue)
-            ->getMock();
+                ->shouldReceive('enableFailed')
+                ->with(m::type("String"))
+                ->once()
+                ->andReturn($returnValue)
+                ->getMock();
 
         Log::shouldReceive('emergency')
-            ->once()
-            ->with($exception)
-            ->andReturnNull();
+                ->once()
+                ->with($exception)
+                ->andReturnNull();
 
-        $this->assertEquals($returnValue,  $this->getProcessor()->enable($listener, $user, $area));
+        $this->assertEquals($returnValue, $this->getProcessor()->enable($listener, $user, $area));
     }
 
-    public function testDisableSuccess() {
+    public function testDisableSuccess()
+    {
         $area = m::mock(AreaContract::class)
-            ->shouldReceive('getLabel')
-            ->once()
-            ->andReturn(m::type('String'))
-            ->getMock();
+                ->shouldReceive('getLabel')
+                ->once()
+                ->andReturn(m::type('String'))
+                ->getMock();
 
         $userConfig = m::mock('Eloquent', UserConfig::class)
-            ->shouldReceive('getAttribute')
-            ->with('id')
-            ->once()
-            ->andReturn(1)
-            ->getMock();
+                ->shouldReceive('getAttribute')
+                ->with('id')
+                ->once()
+                ->andReturn(1)
+                ->getMock();
 
         $user = m::mock('Eloquent', User::class);
 
         $this->setupGetUserConfig($userConfig, $user, $area);
 
         $this->userConfigRepository
-            ->shouldReceive('markAsDisabledById')
-            ->once()
-            ->andReturnNull();
+                ->shouldReceive('markAsDisabledById')
+                ->once()
+                ->andReturnNull();
 
         $returnValue = 'return-value';
 
         $listener = m::mock(UserConfigurationListener::class)
-            ->shouldReceive('disableSuccess')
-            ->with( m::type("String") )
-            ->once()
-            ->andReturn($returnValue)
-            ->getMock();
+                ->shouldReceive('disableSuccess')
+                ->with(m::type("String"))
+                ->once()
+                ->andReturn($returnValue)
+                ->getMock();
 
-        $this->assertEquals($returnValue,  $this->getProcessor()->disable($listener, $user, $area));
+        $this->assertEquals($returnValue, $this->getProcessor()->disable($listener, $user, $area));
     }
 
-    public function testDisableFailed() {
+    public function testDisableFailed()
+    {
         $area = m::mock(AreaContract::class)
-            ->shouldReceive('getLabel')
-            ->once()
-            ->andReturn(m::type('String'))
-            ->getMock();
+                ->shouldReceive('getLabel')
+                ->once()
+                ->andReturn(m::type('String'))
+                ->getMock();
 
         $userConfig = m::mock('Eloquent', UserConfig::class)
-            ->shouldReceive('getAttribute')
-            ->with('id')
-            ->once()
-            ->andReturn(1)
-            ->getMock();
+                ->shouldReceive('getAttribute')
+                ->with('id')
+                ->once()
+                ->andReturn(1)
+                ->getMock();
 
         $user = m::mock('Eloquent', User::class);
 
         $this->setupGetUserConfig($userConfig, $user, $area);
 
-        $exception =  m::mock(Exception::class);
+        $exception = m::mock(Exception::class);
 
         $this->userConfigRepository
-            ->shouldReceive('markAsDisabledById')
-            ->once()
-            ->andThrow($exception);
+                ->shouldReceive('markAsDisabledById')
+                ->once()
+                ->andThrow($exception);
 
         $returnValue = 'return-value';
 
         $listener = m::mock(UserConfigurationListener::class)
-            ->shouldReceive('disableFailed')
-            ->with( m::type("String") )
-            ->once()
-            ->andReturn($returnValue)
-            ->getMock();
+                ->shouldReceive('disableFailed')
+                ->with(m::type("String"))
+                ->once()
+                ->andReturn($returnValue)
+                ->getMock();
 
         Log::shouldReceive('emergency')
-            ->once()
-            ->with($exception)
-            ->andReturnNull();
+                ->once()
+                ->with($exception)
+                ->andReturnNull();
 
-        $this->assertEquals($returnValue,  $this->getProcessor()->disable($listener, $user, $area));
+        $this->assertEquals($returnValue, $this->getProcessor()->disable($listener, $user, $area));
     }
 
-    protected function getMockedConfigurationListener($returnValue, $area) {
-        $provider   = m::mock(Provider::class);
-        $userConfig = m::mock(UserConfig::class);
+    protected function getMockedConfigurationListener($returnValue, $area)
+    {
+        $provider    = m::mock(Provider::class);
+        $userConfig  = m::mock(UserConfig::class);
         $formBuilder = m::mock(Builder::class);
 
         $this->twoFactorProvidersService
-            ->shouldReceive('getEnabledInArea')
-            ->once()
-            ->with($area)
-            ->andReturn($provider)
-            ->getMock();
+                ->shouldReceive('getEnabledInArea')
+                ->once()
+                ->with($area)
+                ->andReturn($provider)
+                ->getMock();
 
         $this->userProviderConfigService
-            ->shouldReceive('saveConfig')
-            ->once()
-            ->with($provider)
-            ->andReturn($userConfig)
-            ->getMock();
+                ->shouldReceive('saveConfig')
+                ->once()
+                ->with($provider)
+                ->andReturn($userConfig)
+                ->getMock();
 
         $this->presenter
-            ->shouldReceive('configure')
-            ->once()
-            ->with($userConfig, $area, $provider)
-            ->andReturn($formBuilder)
-            ->getMock();
+                ->shouldReceive('configure')
+                ->once()
+                ->with($userConfig, $area, $provider)
+                ->andReturn($formBuilder)
+                ->getMock();
 
         $this->dispatcher
-            ->shouldReceive('fire')
-            ->once()
-            ->with('antares.form: two_factor_auth', [$provider, $formBuilder])
-            ->andReturnNull()
-            ->getMock();
+                ->shouldReceive('fire')
+                ->once()
+                ->with('antares.form: two_factor_auth', [$provider, $formBuilder])
+                ->andReturnNull()
+                ->getMock();
 
         return m::mock(UserConfigurationListener::class)
-            ->shouldReceive('showConfiguration')
-            ->once()
-            ->with($provider, $formBuilder)
-            ->andReturn($returnValue)
-            ->getMock();
+                        ->shouldReceive('showConfiguration')
+                        ->once()
+                        ->with($provider, $formBuilder)
+                        ->andReturn($returnValue)
+                        ->getMock();
     }
 
-    protected function setupGetUserConfig($userConfig, $user, $area) {
+    protected function setupGetUserConfig($userConfig, $user, $area)
+    {
         $provider = m::mock(Provider::class)
-            ->shouldReceive('getId')
-            ->andReturn(1)
-            ->getMock();
+                ->shouldReceive('getId')
+                ->andReturn(1)
+                ->getMock();
 
         $user
-            ->shouldReceive('getAttribute')
-            ->with('id')
-            ->andReturn(1)
-            ->getMock();
+                ->shouldReceive('getAttribute')
+                ->with('id')
+                ->andReturn(1)
+                ->getMock();
 
         $this->twoFactorProvidersService
-            ->shouldReceive('getEnabledInArea')
-            ->once()
-            ->with($area)
-            ->andReturn($provider)
-            ->getMock();
+                ->shouldReceive('getEnabledInArea')
+                ->once()
+                ->with($area)
+                ->andReturn($provider)
+                ->getMock();
 
         $this->userConfigRepository
-            ->shouldReceive('findByUserIdAndProviderId')
-            ->once()
-            ->andReturn($userConfig)
-            ->getMock();
+                ->shouldReceive('findByUserIdAndProviderId')
+                ->once()
+                ->andReturn($userConfig)
+                ->getMock();
     }
 
 }

@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Processor;
 
 use Antares\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;

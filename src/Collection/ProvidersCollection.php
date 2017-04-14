@@ -18,39 +18,37 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Collection;
 
 use Illuminate\Support\Collection as BaseCollection;
 
-class ProvidersCollection extends BaseCollection {
-    
+class ProvidersCollection extends BaseCollection
+{
+
     /**
      * Returns providers models which belong to given area.
      * 
      * @param string $area
      * @return ProvidersCollection
      */
-    public function filterByArea($area) {
+    public function filterByArea($area)
+    {
         return $this->filter(function($provider) use($area) {
-            return $provider->area === $area;
-        });
+                    return $provider->area === $area;
+                });
     }
-    
+
     /**
      * Returns providers models based on a name.
      * 
      * @param string $name
      * @return ProvidersCollection
      */
-    public function filterByGatewayName($name) {
+    public function filterByGatewayName($name)
+    {
         return $this->filter(function($provider) use($name) {
-            return $provider->name === $name;
-        });
+                    return $provider->name === $name;
+                });
     }
-    
+
 }

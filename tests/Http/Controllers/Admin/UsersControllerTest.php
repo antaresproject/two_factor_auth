@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Http\Controllers\Admin\TestCase;
 
 use Antares\Area\AreaServiceProvider;
@@ -46,13 +41,14 @@ class UsersControllerTest extends TestCase
     {
         $this->addProvider(AreaServiceProvider::class);
         $this->addProvider(TwoFactorAuthServiceProvider::class);
-        
+
         parent::setUp();
-        
+
         $this->disableMiddlewareForAllTests();
     }
-    
-    public function tearDown() {
+
+    public function tearDown()
+    {
         parent::tearDown();
         m::close();
     }
@@ -64,54 +60,56 @@ class UsersControllerTest extends TestCase
      */
     protected function getProcessorMock()
     {
-        $userConfigRepository   = m::mock(UserConfigRepositoryContract::class);
-        $processor              = m::mock(UsersProcessor::class, [$userConfigRepository]);
-        
+        $userConfigRepository = m::mock(UserConfigRepositoryContract::class);
+        $processor            = m::mock(UsersProcessor::class, [$userConfigRepository]);
+
         $this->app->instance(UsersProcessor::class, $processor);
-        
+
         return $processor;
     }
-    
-    public function testGetResetWithSuccess() {
+
+    public function testGetResetWithSuccess()
+    {
         $userId = User::first()->id;
-        
+
         $this->getProcessorMock()
                 ->shouldReceive('resetUserConfig')
                 ->once()
                 ->andReturnUsing(function ($listener) {
                     return $listener->resetSuccess();
                 });
-                
+
         $this->app['antares.messages'] = m::mock(\Antares\Contracts\Messages\MessageBag::class)
                 ->shouldReceive('add')
                 ->with('success', m::type('String'))
                 ->once()
                 ->andReturnNull()
                 ->getMock();
-                
-        $this->call('GET', 'admin/two_factor_auth/user/' . $userId . '/reset');
+
+        $this->call('GET', 'antares/two_factor_auth/user/' . $userId . '/reset');
         $this->assertResponseStatus(302);
     }
-    
-    public function testGetResetWithFailed() {
+
+    public function testGetResetWithFailed()
+    {
         $userId = User::first()->id;
-        
+
         $this->getProcessorMock()
                 ->shouldReceive('resetUserConfig')
                 ->once()
                 ->andReturnUsing(function ($listener) {
                     return $listener->resetFailed();
                 });
-                
+
         $this->app['antares.messages'] = m::mock(\Antares\Contracts\Messages\MessageBag::class)
                 ->shouldReceive('add')
                 ->with('error', m::type('String'))
                 ->once()
                 ->andReturnNull()
                 ->getMock();
-                
-        $this->call('GET', 'admin/two_factor_auth/user/' . $userId . '/reset');
+
+        $this->call('GET', 'antares/two_factor_auth/user/' . $userId . '/reset');
         $this->assertResponseStatus(302);
     }
-    
+
 }

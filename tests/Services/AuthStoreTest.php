@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Tests\Services;
 
 use Antares\Area\AreaServiceProvider;
@@ -31,42 +26,48 @@ use Antares\TwoFactorAuth\Services\AuthStore;
 use Illuminate\Http\Request;
 use Session;
 
-class AuthStoreTest extends TestCase {
-    
+class AuthStoreTest extends TestCase
+{
+
     /**
      *
      * @var AuthStore
      */
     protected $authStore;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         $this->addProvider(AreaServiceProvider::class);
 
         parent::setUp();
-        
+
         Session::setDefaultDriver('array');
-        
+
         $request = new Request();
-        $request->setSession(app('session')->driver());
-        
+
+        $request->setLaravelSession(app('session')->driver());
+
         $this->authStore = new AuthStore($request->getSession());
     }
-    
-    public function testIsNotVerified() {
+
+    public function testIsNotVerified()
+    {
         $this->assertFalse($this->authStore->isVerified());
     }
-    
-    public function testVerified() {
+
+    public function testVerified()
+    {
         $this->authStore->verify();
         $this->assertTrue($this->authStore->isVerified());
     }
-    
-    public function testUnverify() {
+
+    public function testUnverify()
+    {
         $this->authStore->verify();
         $this->assertTrue($this->authStore->isVerified());
-        
+
         $this->authStore->unverify();
         $this->assertFalse($this->authStore->isVerified());
     }
-    
+
 }

@@ -18,23 +18,19 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Services;
 
 use Illuminate\Session\Store as Session;
 
-class AuthStore {
-    
+class AuthStore
+{
+
     /**
      * Session instance.
      * @var Session
      */
     protected $session;
-    
+
     /**
      * Session key name.
      *
@@ -46,31 +42,35 @@ class AuthStore {
      * AuthStore constructor.
      * @param Session $session
      */
-    public function __construct(Session $session) {
+    public function __construct(Session $session)
+    {
         $this->session = $session;
     }
-    
+
     /**
      * Check if an authentication is verified.
      * 
      * @return boolean
      */
-    public function isVerified() {
+    public function isVerified()
+    {
         return (bool) $this->session->get(self::$name, false);
     }
-    
+
     /**
      * Verify an authentication.
      */
-    public function verify() {
-        $this->session->set(self::$name, true);
+    public function verify()
+    {
+        $this->session->put(self::$name, true);
     }
-    
+
     /**
      * Unverify an authentication.
      */
-    public function unverify() {
+    public function unverify()
+    {
         $this->session->forget(self::$name);
     }
-    
+
 }

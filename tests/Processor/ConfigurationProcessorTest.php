@@ -18,102 +18,112 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Tests\Processor;
 
-use Mockery as m;
-use Antares\Testing\TestCase;
-use Antares\TwoFactorAuth\Processor\ConfigurationProcessor;
-use Antares\TwoFactorAuth\Http\Presenters\ConfigurationPresenter;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Contracts\ConfigurationListener;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
-use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
-use Antares\Contracts\Html\Builder;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Area\AreaServiceProvider;
 use Antares\Area\Contracts\AreaContract;
-use Illuminate\Support\Collection;
+use Antares\Contracts\Html\Builder;
+use Antares\Html\Form\FormBuilder;
+use Antares\Testing\TestCase;
+use Antares\TwoFactorAuth\Contracts\ConfigurationListener;
+use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
+use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\TwoFactorAuth\Http\Presenters\ConfigurationPresenter;
+use Antares\TwoFactorAuth\Model\Provider;
+use Antares\TwoFactorAuth\Processor\ConfigurationProcessor;
+use Antares\TwoFactorAuth\Providers\Google2FAProvider;
+use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\TwoFactorAuth\Validators\Google2FAValidator;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Exception;
-use Antares\Area\AreaServiceProvider;
+use Illuminate\Support\Collection;
+use Mockery;
+use Mockery as m;
+use PragmaRX\Google2FA\Google2FA;
 
-class ConfigurationProcessorTest extends TestCase {
-    
+class ConfigurationProcessorTest extends TestCase
+{
+
     /**
      *
      * @var Mockery
      */
     protected $presenter;
-    
+
     /**
      *
      * @var Mockery
      */
     protected $service;
-    
+
     /**
      *
      * @var Mockery
      */
     protected $view;
-    
+
     /**
      *
      * @var Mockery
      */
     protected $providersRepository;
-    
+
     /**
      *
      * @var Mockery
      */
     protected $redirect;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         $this->addProvider(AreaServiceProvider::class);
 
         parent::setUp();
-        
-        $this->presenter    = m::mock(ConfigurationPresenter::class);
-        $this->service      = m::mock(TwoFactorProvidersService::class)->shouldReceive('bind')->once()->andReturnSelf()->getMock();
-        $this->view         = m::mock(View::class)->makePartial();
-        
+
+        $this->presenter = $presenter       = m::mock(ConfigurationPresenter::class);
+        $this->service   = m::mock(TwoFactorProvidersService::class)->shouldReceive('bind')->once()->andReturnSelf()->getMock();
+        $this->view      = m::mock(View::class)->makePartial();
+
         $this->providersRepository = m::mock(ProvidersRepositoryContract::class);
     }
-    
-    public function tearDown() {
+
+    public function tearDown()
+    {
         parent::tearDown();
         m::close();
     }
-    
+
     /**
      * 
      * @return ConfigurationProcessor
      */
-    protected function getProcessor() {
+    protected function getProcessor()
+    {
         return new ConfigurationProcessor($this->presenter, $this->service, $this->providersRepository);
     }
-    
-    public function testIndex() {
+
+    public function testIndex()
+    {
+        $provider = new Google2FAProvider(new Google2FA(), $this->app->make(Google2FAValidator::class));
+        $form     = m::mock(FormBuilder::class);
         $this->presenter->shouldReceive('index')->once()->andReturn($this->view);
-        $this->service->shouldReceive('getAreaProvidersCollection')->once()->andReturn(new Collection);
-        
+
+        $this->service->shouldReceive('getAreaProvidersCollection')->andReturn(new Collection)
+                ->shouldReceive('getProviderGatewayByName')->with('google2fa')->andReturn($provider);
+
         $processor = $this->getProcessor();
-        
-        $this->assertEquals($this->view, $processor->index());
+
+        $this->assertEquals($this->view, $processor->index($form));
     }
-    
-    public function testEdit() {
+
+    public function testEdit()
+    {
         $area = m::mock(AreaContract::class)
                 ->shouldReceive('getId')
                 ->andReturn('admin')
                 ->getMock();
-        
+
         $provider = m::mock('Eloquent', Provider::class)
                 ->shouldReceive('setAttribute')
                 ->twice()
@@ -125,70 +135,71 @@ class ConfigurationProcessorTest extends TestCase {
                 ->once()
                 ->andReturnNull()
                 ->getMock();
-        
+
         $form = m::mock(Builder::class);
-        
+
         $this->service->shouldReceive('getProviderGatewayByName')
                 ->with(m::type('String'))
-                ->once()
-                ->andReturn( m::mock(ProviderGatewayContract::class) )
+                ->andReturn(m::mock(ProviderGatewayContract::class))
                 ->getMock();
-        
+
         $this->presenter->shouldReceive('form')
                 ->with($provider)
                 ->once()
                 ->andReturn($form);
-        
+
         $listener = m::mock(ConfigurationListener::class)
                 ->shouldReceive('showProviderConfiguration')
                 ->with($area, $provider, $form)
                 ->once()
-                ->andReturn( m::mock(View::class) )
+                ->andReturn(m::mock(View::class))
                 ->getMock();
-        
+
         $response = $this->getProcessor()->edit($listener, $area, $provider);
-        
+
         $this->assertInstanceOf(View::class, $response);
     }
-    
-    public function testUpdateSuccess() {
+
+    public function testUpdateSuccess()
+    {
         $input = ['id' => 1];
-        
+
         $this->providersRepository->shouldReceive('update')
                 ->with($input)
                 ->once()
                 ->andReturnNull();
-        
+
         $listener = m::mock(ConfigurationListener::class)
                 ->shouldReceive('updateSuccess')
                 ->with(m::type("String"))
                 ->once()
-                ->andReturn( m::mock(RedirectResponse::class) )
+                ->andReturn(m::mock(RedirectResponse::class))
                 ->getMock();
-        
+
         $response = $this->getProcessor()->update($listener, $input);
-        
+
         $this->assertInstanceOf(RedirectResponse::class, $response);
     }
-    
-    public function testUpdateFailed() {
+
+    public function testUpdateFailed()
+    {
         $input = ['id' => 1];
-        
+
         $this->providersRepository->shouldReceive('update')
                 ->with($input)
                 ->once()
-                ->andThrow( m::mock(Exception::class) );
-        
+                ->andThrow(m::mock(Exception::class));
+
         $listener = m::mock(ConfigurationListener::class)
                 ->shouldReceive('updateFailed')
                 ->with(m::type("String"))
                 ->once()
-                ->andReturn( m::mock(RedirectResponse::class) )
+                ->andReturn(m::mock(RedirectResponse::class))
                 ->getMock();
-        
+
         $response = $this->getProcessor()->update($listener, $input);
-        
+
         $this->assertInstanceOf(RedirectResponse::class, $response);
     }
-    
+
 }
