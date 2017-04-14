@@ -2,6 +2,7 @@
     "name": "antaresproject/component-two-factor-auth",
     "description": "Two Factor Authentication Manager Antares",
     "type": "antaresproject-component",
+    "homepage": "https://github.com/antaresproject/two_factor_auth",
     "version": "0.9.2.1",
     "authors": [
         {
@@ -18,5 +19,8 @@
         "psr-4": {
             "Antares\\TwoFactorAuth\\": "src/"
         }
+    },
+    "extra": {
+        "friendly-name": "Two Factor Auth"
     }
 }
