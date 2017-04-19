@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Http\Controllers\Admin;
 
 use Antares\TwoFactorAuth\Processor\ConfigurationProcessor;
@@ -77,12 +72,15 @@ class ConfigurationController extends AdminController implements ConfigurationLi
     /**
      * Request for edit provider on selected area.
      *
-     * @param AreaContract $area
+     * @param mixed $area
      * @param Provider $provider
      * @return mixed
      */
-    public function edit(AreaContract $area, Provider $provider)
+    public function edit($area, Provider $provider)
     {
+        $area = (!$area instanceof AreaContract) ? app(\Antares\Area\Contracts\AreaManagerContract::class)->getById($area) : $area;
+
+
         return $this->processor->edit($this, $area, $provider);
     }
 

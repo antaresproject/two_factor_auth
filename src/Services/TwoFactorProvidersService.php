@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Services;
 
 use Antares\Area\Contracts\AreaManagerContract;
@@ -220,8 +215,8 @@ class TwoFactorProvidersService
      */
     public function getEnabledInArea(AreaContract $area)
     {
-        $providers = $this->providers->filterByArea($area->getId());
 
+        $providers = $this->providers->filterByArea($area->getId());
         foreach ($providers as $provider) {
             if ($provider->isEnabled()) {
                 return $provider;

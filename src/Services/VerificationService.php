@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Services;
 
 use Antares\Area\Contracts\AreaManagerContract;

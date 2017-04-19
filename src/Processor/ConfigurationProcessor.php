@@ -18,11 +18,6 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
 namespace Antares\TwoFactorAuth\Processor;
 
 use Antares\TwoFactorAuth\Contracts\ConfigurationPresenter;
@@ -82,8 +77,9 @@ class ConfigurationProcessor
         $areaProviders = $this->twoFactorProvidersService->getAreaProvidersCollection();
         if (is_null($form)) {
             $provider = app(Provider::class)->where('name', 'google2fa')->where('area', area())->first();
+
             $provider->setProviderGateway($this->twoFactorProvidersService->getProviderGatewayByName($provider->name));
-            $form     = $this->presenter->form($provider);
+            $form = $this->presenter->form($provider);
         }
 
         return $this->presenter->index($areaProviders, $form);
