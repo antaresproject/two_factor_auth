@@ -120,20 +120,4 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /**
-     * @return RoleActionList
-     */
-    public static function acl()
-    {
-        $actions = [
-            new Action('admin.two_factor_auth.configuration.*', 'Configuration'),
-            new Action('admin.two_factor_auth.user.reset', 'Reset User Settings'),
-        ];
-
-        $permissions = new RoleActionList;
-        $permissions->add(Role::admin()->name, $actions);
-
-        return $permissions;
-    }
-
 }
