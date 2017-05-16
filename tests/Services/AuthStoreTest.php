@@ -18,11 +18,11 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Tests\Services;
+namespace Antares\Modules\TwoFactorAuth\Tests\Services;
 
 use Antares\Area\AreaServiceProvider;
 use Antares\Testing\TestCase;
-use Antares\TwoFactorAuth\Services\AuthStore;
+use Antares\Modules\TwoFactorAuth\Services\AuthStore;
 use Illuminate\Http\Request;
 use Session;
 

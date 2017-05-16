@@ -18,16 +18,16 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Http\Controllers\Admin\TestCase;
+namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin\TestCase;
 
 use Antares\Area\AreaServiceProvider;
 use Antares\Contracts\Html\Form\Builder;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\TwoFactorAuthServiceProvider;
-use Antares\TwoFactorAuth\Contracts\ConfigurationPresenter;
-use Antares\TwoFactorAuth\Processor\ConfigurationProcessor;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\TwoFactorAuthServiceProvider;
+use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationPresenter;
+use Antares\Modules\TwoFactorAuth\Processor\ConfigurationProcessor;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Testing\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\Request;

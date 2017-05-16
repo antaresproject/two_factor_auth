@@ -18,21 +18,17 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Processor;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Processor;
-
-use Antares\TwoFactorAuth\Contracts\UsersListener;
-use Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Contracts\UsersListener;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
 use Antares\Model\User;
 use Exception;
 use Log;
 
-class UsersProcessor {
-    
+class UsersProcessor
+{
+
     /**
      * User configuration repository instance.
      *
@@ -44,10 +40,11 @@ class UsersProcessor {
      * UsersProcessor constructor.
      * @param UserConfigRepositoryContract $userConfigRepository
      */
-    public function __construct(UserConfigRepositoryContract $userConfigRepository) {
+    public function __construct(UserConfigRepositoryContract $userConfigRepository)
+    {
         $this->userConfigRepository = $userConfigRepository;
     }
-    
+
     /**
      * Reset configuration for given user for all providers. Response will be returned.
      * 
@@ -55,15 +52,15 @@ class UsersProcessor {
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function resetUserConfig(UsersListener $listener, User $user) {
+    public function resetUserConfig(UsersListener $listener, User $user)
+    {
         try {
             $this->userConfigRepository->deleteByUserId($user->id);
             return $listener->resetSuccess();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             Log::emergency($e->getMessage());
             return $listener->resetFailed();
         }
     }
-    
+
 }

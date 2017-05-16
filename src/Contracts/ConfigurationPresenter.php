@@ -18,20 +18,15 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Contracts;
-
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Illuminate\Support\Collection;
 use Antares\Html\Form\FormBuilder;
 
 interface ConfigurationPresenter
 {
-    
+
     /**
      * Return a View instance for areas configuration page.
      * 
@@ -40,7 +35,7 @@ interface ConfigurationPresenter
      * @return View
      */
     public function index(Collection $areaProvidersCollection, FormBuilder $form);
-    
+
     /**
      * Form generator for a provider configuration page.
      * 
@@ -48,5 +43,4 @@ interface ConfigurationPresenter
      * @return FormGrid
      */
     public function form(Provider $provider);
-    
 }

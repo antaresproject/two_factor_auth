@@ -18,17 +18,17 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Tests\Services;
+namespace Antares\Modules\TwoFactorAuth\Tests\Services;
 
 use Antares\Area\Contracts\AreaManagerContract;
 use Antares\Area\Model\Area;
 use Antares\Model\User;
 use Antares\Testing\TestCase;
-use Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
-use Antares\TwoFactorAuth\Services\AuthStore;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Services\UserProviderConfigService;
-use Antares\TwoFactorAuth\Services\VerificationService;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Services\AuthStore;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
+use Antares\Modules\TwoFactorAuth\Services\VerificationService;
 use Antares\Contracts\Auth\Guard;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Routing\Route;

@@ -18,13 +18,13 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Http\Controllers\Admin;
+namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
-use Antares\TwoFactorAuth\Processor\ConfigurationProcessor;
-use Antares\TwoFactorAuth\Contracts\ConfigurationListener;
+use Antares\Modules\TwoFactorAuth\Processor\ConfigurationProcessor;
+use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationListener;
 use Antares\Foundation\Http\Controllers\AdminController;
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
 use Illuminate\Http\Request;
 

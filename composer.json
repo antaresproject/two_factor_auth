@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Antares\\TwoFactorAuth\\": "src/"
+            "Antares\\Modules\\TwoFactorAuth\\": "src/"
         }
     },
     "extra": {

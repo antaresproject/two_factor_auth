@@ -18,25 +18,21 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Facades;
+namespace Antares\Modules\TwoFactorAuth\Facades;
 
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 
-class AreaProviders {
-    
+class AreaProviders
+{
+
     /**
      * Area instance.
      *
      * @var AreaContract
      */
     protected $area;
-    
+
     /**
      * Array of Provider instances.
      *
@@ -48,50 +44,55 @@ class AreaProviders {
      * AreaProviders constructor.
      * @param AreaContract $area
      */
-    public function __construct(AreaContract $area) {
+    public function __construct(AreaContract $area)
+    {
         $this->area = $area;
     }
-    
+
     /**
      * Add a provider model.
      * 
      * @param Provider $model
      */
-    public function addModel(Provider $model) {
+    public function addModel(Provider $model)
+    {
         $this->models[] = $model;
     }
-    
+
     /**
      * Return an area object.
      * 
      * @return AreaContract
      */
-    public function getArea() {
+    public function getArea()
+    {
         return $this->area;
     }
-    
+
     /**
      * Get all providers models which belong to an area.
      * 
      * @return Provider[]
      */
-    public function getModels() {
+    public function getModels()
+    {
         return $this->models;
     }
-    
+
     /**
      * Get provider model of an area which is enabled. Return NULL if not found.
      * 
      * @return Provider | null
      */
-    public function getEnabledModel() {
-        foreach($this->models as $model) {
-            if($model->isEnabled()) {
+    public function getEnabledModel()
+    {
+        foreach ($this->models as $model) {
+            if ($model->isEnabled()) {
                 return $model;
             }
         }
 
         return null;
     }
-    
+
 }

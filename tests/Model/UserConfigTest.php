@@ -18,77 +18,80 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Tests\Model;
+namespace Antares\Modules\TwoFactorAuth\Tests\Model;
 
 use Antares\Testing\TestCase;
-use Antares\TwoFactorAuth\Model\UserConfig;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Model\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Antares\Area\AreaServiceProvider;
 
-class UserConfigTest extends TestCase {
-    
+class UserConfigTest extends TestCase
+{
+
     /**
      *
      * @var UserConfig;
      */
     protected $model;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         $this->addProvider(AreaServiceProvider::class);
 
         parent::setUp();
-        
-        $this->model = new UserConfig;
-        $this->model->id = '1';
+
+        $this->model              = new UserConfig;
+        $this->model->id          = '1';
         $this->model->provider_id = '1';
-        $this->model->user_id = '1';
-        $this->model->settings = ['text' => 'foo'];
-        $this->model->configured = '0';
+        $this->model->user_id     = '1';
+        $this->model->settings    = ['text' => 'foo'];
+        $this->model->configured  = '0';
     }
-    
-    public function testSetupAttributes() {
+
+    public function testSetupAttributes()
+    {
         $model = new UserConfig;
-        
+
         $this->assertSame(false, $model->configured);
     }
-    
-    public function testAttributes() {
+
+    public function testAttributes()
+    {
         $this->assertSame(1, $this->model->id);
         $this->assertSame(1, $this->model->provider_id);
         $this->assertSame(1, $this->model->user_id);
         $this->assertSame(false, $this->model->configured);
         $this->assertInternalType('array', $this->model->settings);
     }
-    
-    public function testTableName() {
+
+    public function testTableName()
+    {
         $this->assertSame('tbl_two_factor_auth_users', $this->model->getTable());
     }
-    
-    public function testIsConfiguredMethod() {
+
+    public function testIsConfiguredMethod()
+    {
         $this->assertSame(false, $this->model->isConfigured());
         $this->model->configured = 1;
         $this->assertSame(true, $this->model->isConfigured());
     }
-    
-    public function testProviderRelation() {
+
+    public function testProviderRelation()
+    {
         $relation = $this->model->provider();
-        
+
         $this->assertInstanceOf(BelongsTo::class, $relation);
         $this->assertInstanceOf(Provider::class, $relation->getRelated());
     }
-    
-    public function testUserRelation() {
+
+    public function testUserRelation()
+    {
         $relation = $this->model->user();
-        
+
         $this->assertInstanceOf(BelongsTo::class, $relation);
         $this->assertInstanceOf(User::class, $relation->getRelated());
     }
-    
+
 }

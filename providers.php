@@ -1,5 +1,5 @@
 <?php
 
 return [
-    Antares\TwoFactorAuth\TwoFactorAuthServiceProvider::class,
+    Antares\Modules\TwoFactorAuth\TwoFactorAuthServiceProvider::class,
 ];

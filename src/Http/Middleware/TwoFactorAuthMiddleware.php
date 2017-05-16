@@ -18,30 +18,25 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Http\Middleware;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Http\Middleware;
-
-use Antares\TwoFactorAuth\Services\VerificationService;
+use Antares\Modules\TwoFactorAuth\Services\VerificationService;
 use Antares\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Closure;
 use function response;
 use function redirect;
 
-class TwoFactorAuthMiddleware {
-    
-    
+class TwoFactorAuthMiddleware
+{
+
     /**
      *  Verification service instance.
      *
      * @var VerificationService
      */
     protected $verificationService;
-    
+
     /**
      * Guard instance.
      *
@@ -54,11 +49,12 @@ class TwoFactorAuthMiddleware {
      * @param VerificationService $verificationService
      * @param Guard $guard
      */
-    public function __construct(VerificationService $verificationService, Guard $guard) {
+    public function __construct(VerificationService $verificationService, Guard $guard)
+    {
         $this->verificationService = $verificationService;
         $this->guard               = $guard;
     }
-    
+
     /**
      * Handle an incoming request.
      *
@@ -67,8 +63,9 @@ class TwoFactorAuthMiddleware {
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next) {
-        if( ! $this->verificationService->mustBeVerified($request->route(), $this->guard)) {
+    public function handle(Request $request, Closure $next)
+    {
+        if (!$this->verificationService->mustBeVerified($request->route(), $this->guard)) {
             return $next($request);
         }
 
@@ -76,7 +73,7 @@ class TwoFactorAuthMiddleware {
             return response('Unauthorized.', 401);
         }
 
-        return redirect()->to( $this->verificationService->getPathToVerificationAction() );
+        return redirect()->to($this->verificationService->getPathToVerificationAction());
     }
-    
+
 }

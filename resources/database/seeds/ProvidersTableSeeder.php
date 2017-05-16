@@ -17,17 +17,11 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
-
-
-
-
 use Illuminate\Database\Seeder;
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\TwoFactorAuthServiceProvider;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\TwoFactorAuthServiceProvider;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Contracts\ProviderGatewayContract;
 use Carbon\Carbon;
 
 class ProvidersTableSeeder extends Seeder

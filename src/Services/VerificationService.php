@@ -18,10 +18,10 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Services;
+namespace Antares\Modules\TwoFactorAuth\Services;
 
 use Antares\Area\Contracts\AreaManagerContract;
-use Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
 use Antares\Contracts\Auth\Guard;
 use Illuminate\Routing\Route;
 use Illuminate\Contracts\Routing\UrlGenerator;

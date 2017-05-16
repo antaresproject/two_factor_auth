@@ -18,24 +18,19 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Http\Presenters;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Http\Presenters;
-
-use Antares\TwoFactorAuth\Facades\AreaProviders;
+use Antares\Modules\TwoFactorAuth\Facades\AreaProviders;
 use HTML;
 use Illuminate\Support\Collection;
-use Antares\TwoFactorAuth\Services\UserProviderConfigService;
+use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
 use Antares\Model\User;
-use Antares\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 use Antares\Contracts\Html\Form\Factory as FormFactory;
 use Antares\Contracts\Html\Form\Fieldset;
 use Antares\Contracts\Html\Form\Grid as FormGrid;
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 
 class UserConfigurationPresenter
 {

@@ -18,18 +18,14 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Repositories;
 
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
 
+class UserConfigRepository implements UserConfigRepositoryContract
+{
 
-
-
-namespace Antares\TwoFactorAuth\Repositories;
-
-use Antares\TwoFactorAuth\Model\UserConfig;
-use Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
-
-class UserConfigRepository implements UserConfigRepositoryContract {
-    
     /**
      * User config model.
      *
@@ -41,7 +37,8 @@ class UserConfigRepository implements UserConfigRepositoryContract {
      * UserConfigRepository constructor.
      * @param UserConfig $userConfig
      */
-    public function __construct(UserConfig $userConfig) {
+    public function __construct(UserConfig $userConfig)
+    {
         $this->userConfig = $userConfig;
     }
 
@@ -49,17 +46,18 @@ class UserConfigRepository implements UserConfigRepositoryContract {
      * 
      * {@inheritdoc}
      */
-    public function save(array $data) {
+    public function save(array $data)
+    {
         $providerId = array_get($data, 'provider_id');
         $userId     = array_get($data, 'user_id');
-        
+
         $model = $this->userConfig->newQuery()->where('provider_id', $providerId)->where('user_id', $userId)->first();
-        
-        if($model) {
+
+        if ($model) {
             $model->update($data);
             return $model;
         }
-        
+
         return $this->userConfig->create($data);
     }
 
@@ -67,7 +65,8 @@ class UserConfigRepository implements UserConfigRepositoryContract {
      * 
      * {@inheritdoc}
      */
-    public function deleteByUserId($userId) {
+    public function deleteByUserId($userId)
+    {
         $this->userConfig->newQuery()->where('user_id', $userId)->delete();
     }
 
@@ -75,23 +74,26 @@ class UserConfigRepository implements UserConfigRepositoryContract {
      * 
      * {@inheritdoc}
      */
-    public function findByUserIdAndProviderId($userId, $providerId) {
+    public function findByUserIdAndProviderId($userId, $providerId)
+    {
         return $this->userConfig->newQuery()->where('user_id', $userId)->where('provider_id', $providerId)->first();
     }
-    
+
     /**
      * 
      * {@inheritdoc}
      */
-    public function findByUserId($userId) {
+    public function findByUserId($userId)
+    {
         return $this->userConfig->newQuery()->where('user_id', $userId)->first();
     }
-    
+
     /**
      * 
      * {@inheritdoc}
      */
-    public function markAsConfiguredById($id) {
+    public function markAsConfiguredById($id)
+    {
         $this->userConfig->newQuery()->where('id', $id)->update(['configured' => true]);
     }
 
@@ -99,7 +101,8 @@ class UserConfigRepository implements UserConfigRepositoryContract {
      *
      * {@inheritdoc}
      */
-    public function markAsEnabledById($id) {
+    public function markAsEnabledById($id)
+    {
         $this->userConfig->newQuery()->where('id', $id)->update(['enabled' => true]);
     }
 
@@ -107,7 +110,8 @@ class UserConfigRepository implements UserConfigRepositoryContract {
      *
      * {@inheritdoc}
      */
-    public function markAsDisabledById($id) {
+    public function markAsDisabledById($id)
+    {
         $this->userConfig->newQuery()->where('id', $id)->update(['enabled' => false]);
     }
 

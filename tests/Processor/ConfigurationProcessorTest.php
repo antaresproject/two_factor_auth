@@ -18,22 +18,22 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Tests\Processor;
+namespace Antares\Modules\TwoFactorAuth\Tests\Processor;
 
 use Antares\Area\AreaServiceProvider;
 use Antares\Area\Contracts\AreaContract;
 use Antares\Contracts\Html\Builder;
 use Antares\Html\Form\FormBuilder;
 use Antares\Testing\TestCase;
-use Antares\TwoFactorAuth\Contracts\ConfigurationListener;
-use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
-use Antares\TwoFactorAuth\Http\Presenters\ConfigurationPresenter;
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\Processor\ConfigurationProcessor;
-use Antares\TwoFactorAuth\Providers\Google2FAProvider;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Validators\Google2FAValidator;
+use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationListener;
+use Antares\Modules\TwoFactorAuth\Contracts\ProviderGatewayContract;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Http\Presenters\ConfigurationPresenter;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Processor\ConfigurationProcessor;
+use Antares\Modules\TwoFactorAuth\Providers\Google2FAProvider;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Validators\Google2FAValidator;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;

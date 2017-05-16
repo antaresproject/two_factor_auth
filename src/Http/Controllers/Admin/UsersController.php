@@ -18,20 +18,16 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Http\Controllers\Admin;
+namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
 use Antares\Foundation\Http\Controllers\AdminController;
-use Antares\TwoFactorAuth\Contracts\UsersListener;
-use Antares\TwoFactorAuth\Processor\UsersProcessor;
+use Antares\Modules\TwoFactorAuth\Contracts\UsersListener;
+use Antares\Modules\TwoFactorAuth\Processor\UsersProcessor;
 use Antares\Model\User;
 
-class UsersController extends AdminController implements UsersListener {
-    
+class UsersController extends AdminController implements UsersListener
+{
+
     /**
      * Users processor instance.
      *
@@ -43,33 +39,37 @@ class UsersController extends AdminController implements UsersListener {
      * UsersController constructor.
      * @param UsersProcessor $processor
      */
-    public function __construct(UsersProcessor $processor) {
+    public function __construct(UsersProcessor $processor)
+    {
         parent::__construct();
-        
+
         $this->processor = $processor;
     }
-    
+
     /**
      * Setup middleware based on ACL.
      */
-    protected function setupMiddleware() {
+    protected function setupMiddleware()
+    {
         
     }
-    
+
     /**
      * Reset a provider configuration which belongs to a provider user ID.
      * 
      * @param User $user
      * @return mixed
      */
-    public function getReset(User $user) {
+    public function getReset(User $user)
+    {
         return $this->processor->resetUserConfig($this, $user);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function resetFailed() {
+    public function resetFailed()
+    {
         $message = trans('antares/two_factor_auth::users.responses.reset.fail');
         app('antares.messages')->add('error', $message);
         return redirect()->back();
@@ -78,7 +78,8 @@ class UsersController extends AdminController implements UsersListener {
     /**
      * {@inheritdoc}
      */
-    public function resetSuccess() {
+    public function resetSuccess()
+    {
         $message = trans('antares/two_factor_auth::users.responses.reset.success');
         app('antares.messages')->add('success', $message);
         return redirect()->back();

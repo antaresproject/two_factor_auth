@@ -17,17 +17,11 @@
  * @copyright  (c) 2017, Antares Project
  * @link       http://antaresproject.io
  */
-
-
-
-
-
-
 return [
     'di'        => [
-        \Antares\TwoFactorAuth\Contracts\ConfigurationPresenter::class       => \Antares\TwoFactorAuth\Http\Presenters\ConfigurationPresenter::class,
-        \Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract::class  => \Antares\TwoFactorAuth\Repositories\ProvidersRepository::class,
-        \Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract::class => \Antares\TwoFactorAuth\Repositories\UserConfigRepository::class,
+        \Antares\Modules\TwoFactorAuth\Contracts\ConfigurationPresenter::class       => \Antares\Modules\TwoFactorAuth\Http\Presenters\ConfigurationPresenter::class,
+        \Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract::class  => \Antares\Modules\TwoFactorAuth\Repositories\ProvidersRepository::class,
+        \Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract::class => \Antares\Modules\TwoFactorAuth\Repositories\UserConfigRepository::class,
     ],
     'enabled'   => true,
     'assets'    => [
@@ -39,12 +33,12 @@ return [
         [
             'contract' => PragmaRX\Google2FA\Contracts\Google2FA::class,
             'class'    => PragmaRX\Google2FA\Google2FA::class,
-            'provider' => Antares\TwoFactorAuth\Providers\Google2FAProvider::class,
+            'provider' => Antares\Modules\TwoFactorAuth\Providers\Google2FAProvider::class,
         ],
         [
             'contract' => MarcinKozak\Yubikey\Yubikey::class,
             'class'    => MarcinKozak\Yubikey\Yubikey::class,
-            'provider' => Antares\TwoFactorAuth\Providers\YubikeyProvider::class,
+            'provider' => Antares\Modules\TwoFactorAuth\Providers\YubikeyProvider::class,
         ],
     ],
 ];

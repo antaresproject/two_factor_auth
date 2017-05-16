@@ -18,14 +18,14 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Processor;
+namespace Antares\Modules\TwoFactorAuth\Processor;
 
-use Antares\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
-use Antares\TwoFactorAuth\Contracts\UserConfigurationListener;
-use Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigurationListener;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Services\UserProviderConfigService;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
 use Antares\Model\User;
 use Illuminate\Events\Dispatcher;
 use Exception;
@@ -130,7 +130,7 @@ class UserConfigurationProcessor
         $provider   = $service->getEnabledInArea($area);
         $userConfig = $this->userConfigService->getSettingsByArea($area);
         $secretKey  = $userConfig->settings['secret_key'];
-        $form       = app(\Antares\TwoFactorAuth\Http\Presenters\AuthPresenter::class)->verify($userConfig, $area, $provider, $secretKey);
+        $form       = app(\Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter::class)->verify($userConfig, $area, $provider, $secretKey);
 
 
         //$this->userConfigService->setAsConfigured($userConfig);
@@ -201,7 +201,7 @@ class UserConfigurationProcessor
      *
      * @param User $user
      * @param AreaContract $area
-     * @return \Antares\TwoFactorAuth\Contracts\UserConfig
+     * @return \Antares\Modules\TwoFactorAuth\Contracts\UserConfig
      */
     protected function getUserConfig(User $user, AreaContract $area)
     {

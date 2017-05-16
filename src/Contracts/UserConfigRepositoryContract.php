@@ -18,17 +18,13 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 
+interface UserConfigRepositoryContract
+{
 
-
-
-namespace Antares\TwoFactorAuth\Contracts;
-
-use Antares\TwoFactorAuth\Model\UserConfig;
-
-interface UserConfigRepositoryContract {
-    
     /**
      *  Create or update (if exists) configuration for given userId and providerId in array.
      * 
@@ -36,14 +32,14 @@ interface UserConfigRepositoryContract {
      * @return UserConfig
      */
     public function save(array $data);
-    
+
     /**
      * Delete records by a user ID.
      * 
      * @param int $userId
      */
     public function deleteByUserId($userId);
-    
+
     /**
      * Find the first record by a user ID and a provider ID.
      * 
@@ -52,7 +48,7 @@ interface UserConfigRepositoryContract {
      * @return UserConfig | null
      */
     public function findByUserIdAndProviderId($userId, $providerId);
-    
+
     /**
      * Find the first record by a user ID.
      * 
@@ -60,7 +56,7 @@ interface UserConfigRepositoryContract {
      * @return UserConfig | null
      */
     public function findByUserId($userId);
-    
+
     /**
      * Find a record based on its ID and mark it as configured.
      * 
@@ -81,5 +77,4 @@ interface UserConfigRepositoryContract {
      * @param int $id
      */
     public function markAsDisabledById($id);
-    
 }

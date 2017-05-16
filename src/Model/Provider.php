@@ -18,16 +18,11 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Model;
+namespace Antares\Modules\TwoFactorAuth\Model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Antares\Logger\Traits\LogRecorder;
-use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
+use Antares\Modules\TwoFactorAuth\Contracts\ProviderGatewayContract;
 use Antares\Model\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;

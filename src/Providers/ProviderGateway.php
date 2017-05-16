@@ -18,15 +18,10 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Providers;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Providers;
-
-use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Contracts\ProviderGatewayContract;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Form\Fieldset;
 use function asset;
 

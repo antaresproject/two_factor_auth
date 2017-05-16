@@ -18,27 +18,22 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
+interface UsersListener
+{
 
-
-
-
-namespace Antares\TwoFactorAuth\Contracts;
-
-interface UsersListener {
-    
     /**
      * Set success message and redirect to the previous request.
      * 
      * @return \Illuminate\Http\RedirectResponse
      */
     public function resetSuccess();
-    
+
     /**
      * Set failure message and redirect to the previous request.
      * 
      * @return \Illuminate\Http\RedirectResponse
      */
     public function resetFailed();
-    
 }

@@ -18,21 +18,21 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Tests\Processor;
+namespace Antares\Modules\TwoFactorAuth\Tests\Processor;
 
 use Antares\Model\User;
-use Antares\TwoFactorAuth\Contracts\UserConfigurationListener;
-use Antares\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigurationListener;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 use Mockery as m;
 use Antares\Testing\TestCase;
-use Antares\TwoFactorAuth\Processor\UserConfigurationProcessor;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
-use Antares\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
-use Antares\TwoFactorAuth\Services\UserProviderConfigService;
+use Antares\Modules\TwoFactorAuth\Processor\UserConfigurationProcessor;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
+use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
 use Antares\Contracts\Html\Builder;
-use Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Area\Contracts\AreaContract;
 use Illuminate\Contracts\View\View;
 use Illuminate\Events\Dispatcher;
@@ -145,7 +145,7 @@ class UserConfigurationProcessorTest extends TestCase
 
     public function testMarkAsConfigured()
     {
-        $this->app->register(\Antares\TwoFactorAuth\TwoFactorAuthServiceProvider::class);
+        $this->app->register(\Antares\Modules\TwoFactorAuth\TwoFactorAuthServiceProvider::class);
         $area = m::mock(AreaContract::class)
                         ->shouldReceive('getId')->once()->andReturn('administrators')->getMock();
 

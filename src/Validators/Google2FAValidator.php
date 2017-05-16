@@ -18,13 +18,9 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Validators;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Validators;
-
-class Google2FAValidator extends ProviderValidator {
-
+class Google2FAValidator extends ProviderValidator
+{
+    
 }

@@ -18,73 +18,74 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Tests\Facades;
+namespace Antares\Modules\TwoFactorAuth\Tests\Facades;
 
 use Antares\Testing\TestCase;
 use Antares\Area\Model\Area;
-use Antares\TwoFactorAuth\Facades\AreaProviders;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Facades\AreaProviders;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Area\AreaServiceProvider;
 
-class AreaProvidersTest extends TestCase {
-    
+class AreaProvidersTest extends TestCase
+{
+
     /**
      *
      * @var Area
      */
     protected $area;
-    
+
     /**
      *
      * @var AreaProviders
      */
     protected $areaProviders;
-    
-    public function setUp() {
+
+    public function setUp()
+    {
         $this->addProvider(AreaServiceProvider::class);
 
         parent::setUp();
-        
-        $this->area = new Area('client', 'Client Area');
+
+        $this->area          = new Area('client', 'Client Area');
         $this->areaProviders = new AreaProviders($this->area);
     }
-    
-    public function testInitial() {
+
+    public function testInitial()
+    {
         $this->assertSame($this->area, $this->areaProviders->getArea());
         $this->assertCount(0, $this->areaProviders->getModels());
         $this->assertNull($this->areaProviders->getEnabledModel());
     }
-    
-    public function testAddedModels() {
+
+    public function testAddedModels()
+    {
         $this->populateByModels();
-        
+
         $this->assertCount(10, $this->areaProviders->getModels());
     }
-    
-    public function testEnabledModel() {
+
+    public function testEnabledModel()
+    {
         $this->populateByModels();
-        
+
         $model = $this->areaProviders->getEnabledModel();
-        
+
         $this->assertInstanceOf(Provider::class, $model);
         $this->assertEquals(5, $model->id);
     }
-    
-    protected function populateByModels() {
-        for($i=0; $i<10; ++$i) {
-            $model = new Provider;
-            $model->id = $i;
+
+    protected function populateByModels()
+    {
+        for ($i = 0; $i < 10; ++$i) {
+            $model          = new Provider;
+            $model->id      = $i;
             $model->enabled = ($i === 5);
-            $model->name = 'provider-id-' . $i;
-            $model->area = 'client';
-        
+            $model->name    = 'provider-id-' . $i;
+            $model->area    = 'client';
+
             $this->areaProviders->addModel($model);
         }
     }
-    
+
 }

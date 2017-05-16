@@ -18,19 +18,15 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Repositories;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Repositories;
-
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Exception;
 
-class ProvidersRepository implements ProvidersRepositoryContract {
-    
+class ProvidersRepository implements ProvidersRepositoryContract
+{
+
     /**
      * Provider model.
      *
@@ -42,50 +38,52 @@ class ProvidersRepository implements ProvidersRepositoryContract {
      * ProvidersRepository constructor.
      * @param Provider $provider
      */
-    public function __construct(Provider $provider) {
+    public function __construct(Provider $provider)
+    {
         $this->provider = $provider;
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function all() {
+    public function all()
+    {
         return $this->provider->newQuery()->get();
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function findById($providerId) {
+    public function findById($providerId)
+    {
         return $this->provider->newQuery()->findOrFail($providerId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function update(array $data) {
+    public function update(array $data)
+    {
         $connection = $this->provider->getConnection();
         $connection->beginTransaction();
-        
+
         try {
-            foreach($data as $areaId => $areaData) {
-                if( array_get($areaData, 'enabled') ) {
+            foreach ($data as $areaId => $areaData) {
+                if (array_get($areaData, 'enabled')) {
                     $providerId = array_get($areaData, 'id');
 
                     $this->provider->newQuery()->where('area', $areaId)->where('enabled', 1)->update(['enabled' => false]);
                     $this->provider->newQuery()->findOrFail($providerId)->fill($areaData)->save();
-                }
-                else {
+                } else {
                     $this->provider->newQuery()->where('area', $areaId)->update(['enabled' => false]);
                 }
             }
-            
+
             $connection->commit();
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             $connection->rollBack();
             throw $e;
         }
     }
-    
+
 }

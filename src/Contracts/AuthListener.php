@@ -18,19 +18,15 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Contracts;
-
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
 use Antares\Area\Contracts\AreaContract;
 
-interface AuthListener {
-    
+interface AuthListener
+{
+
     /**
      * Show a verify form.
      * 
@@ -38,19 +34,18 @@ interface AuthListener {
      * @param Builder $form
      */
     public function showVerifyForm(Provider $provider, Builder $form);
-    
+
     /**
      * Redirect to URL based on an area.
      * 
      * @param AreaContract $area
      */
     public function authenticate(AreaContract $area);
-    
+
     /**
      * 
      * @param AreaContract $area
      * @param boolean $withError (default false)
      */
     public function getVerify(AreaContract $area, $withError = false);
-    
 }

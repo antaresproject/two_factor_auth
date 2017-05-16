@@ -18,15 +18,10 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Contracts;
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
 
 interface ConfigurationListener
@@ -56,5 +51,4 @@ interface ConfigurationListener
      * @return mixed
      */
     public function updateSuccess($msg);
-    
 }

@@ -18,15 +18,10 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Http\Handlers;
+namespace Antares\Modules\TwoFactorAuth\Http\Handlers;
 
 use Antares\Html\Form\FormBuilder;
-use Antares\TwoFactorAuth\Processor\ConfigurationProcessor;
+use Antares\Modules\TwoFactorAuth\Processor\ConfigurationProcessor;
 
 class SecuritySection
 {

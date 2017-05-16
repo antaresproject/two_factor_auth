@@ -18,7 +18,7 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Collection;
+namespace Antares\Modules\TwoFactorAuth\Collection;
 
 use Illuminate\Support\Collection as BaseCollection;
 

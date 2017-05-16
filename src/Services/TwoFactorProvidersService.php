@@ -18,15 +18,15 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Services;
+namespace Antares\Modules\TwoFactorAuth\Services;
 
 use Antares\Area\Contracts\AreaManagerContract;
-use Antares\TwoFactorAuth\Contracts\ProviderGatewayContract;
-use Antares\TwoFactorAuth\Facades\AreaProviders;
+use Antares\Modules\TwoFactorAuth\Contracts\ProviderGatewayContract;
+use Antares\Modules\TwoFactorAuth\Facades\AreaProviders;
 use Illuminate\Support\Collection;
-use Antares\TwoFactorAuth\Collection\ProvidersCollection;
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Collection\ProvidersCollection;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Antares\Area\Contracts\AreaContract;
 
 class TwoFactorProvidersService
@@ -78,7 +78,7 @@ class TwoFactorProvidersService
      * TwoFactorProvidersService constructor.
      * @param AreaManagerContract $areaManager
      * @param ProvidersRepositoryContract $providersRepository
-     * @param \Antares\TwoFactorAuth\Services\AuthStore $authStore
+     * @param \Antares\Modules\TwoFactorAuth\Services\AuthStore $authStore
      */
     public function __construct(AreaManagerContract $areaManager, ProvidersRepositoryContract $providersRepository, AuthStore $authStore)
     {
@@ -101,7 +101,7 @@ class TwoFactorProvidersService
     /**
      * Bind gateways with providers models.
      * 
-     * @return \Antares\TwoFactorAuth\Services\TwoFactorProvidersService
+     * @return \Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService
      */
     public function bind()
     {

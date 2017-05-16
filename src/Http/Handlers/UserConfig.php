@@ -18,16 +18,11 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Http\Handlers;
+namespace Antares\Modules\TwoFactorAuth\Http\Handlers;
 
 use Antares\Model\User;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
 use Antares\Html\Form\FormBuilder;
 use Antares\Html\Form\Fieldset;
 use Antares\Html\Form\Grid as FormGrid;

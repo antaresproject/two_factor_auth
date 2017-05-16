@@ -18,10 +18,10 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Http\Presenters;
+namespace Antares\Modules\TwoFactorAuth\Http\Presenters;
 
-use Antares\TwoFactorAuth\Contracts\ConfigurationPresenter as PresenterContract;
-use Antares\TwoFactorAuth\Http\Breadcrumb\Breadcrumb;
+use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationPresenter as PresenterContract;
+use Antares\Modules\TwoFactorAuth\Http\Breadcrumb\Breadcrumb;
 use Antares\Contracts\Html\Form\Builder;
 use Antares\Contracts\Html\Form\Factory as FormFactory;
 use Antares\Contracts\Html\Form\Fieldset;
@@ -29,9 +29,9 @@ use Antares\Contracts\Html\Form\Grid as FormGrid;
 use Antares\Html\Form\FormBuilder;
 use Illuminate\View\View;
 use Illuminate\Support\Collection;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\Facades\AreaProviders;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Facades\AreaProviders;
 use Antares\Area\Contracts\AreaContract;
 use function trans;
 

@@ -18,17 +18,12 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Providers;
+namespace Antares\Modules\TwoFactorAuth\Providers;
 
 use PragmaRX\Google2FA\Contracts\Google2FA;
 use Antares\Contracts\Html\Form\Fieldset;
-use Antares\TwoFactorAuth\Model\UserConfig;
-use Antares\TwoFactorAuth\Validators\Google2FAValidator;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Validators\Google2FAValidator;
 use HTML;
 
 class Google2FAProvider extends ProviderGateway

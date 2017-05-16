@@ -18,14 +18,14 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Processor;
+namespace Antares\Modules\TwoFactorAuth\Processor;
 
-use Antares\TwoFactorAuth\Contracts\ConfigurationPresenter;
-use Antares\TwoFactorAuth\Contracts\ConfigurationListener;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationPresenter;
+use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationListener;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
 use Event;
 use Exception;
 use Log;

@@ -18,28 +18,23 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Contracts;
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
 use Antares\Contracts\Html\Form\Fieldset;
-use Antares\TwoFactorAuth\Model\UserConfig;
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\Validators\ProviderValidator;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Validators\ProviderValidator;
 
 interface ProviderGatewayContract
 {
-    
+
     /**
      * Returns an internal name of a provider.
      * 
      * @return string
      */
     public function getName();
-    
+
     /**
      * Returns a friendly-user label.
      * 
@@ -60,7 +55,7 @@ interface ProviderGatewayContract
      * @return string
      */
     public function getIconUrl();
-    
+
     /**
      * Generate a fieldset which allows to set up a provider configuration on the first use.
      * 
@@ -68,14 +63,14 @@ interface ProviderGatewayContract
      * @param UserConfig $userConfig
      */
     public function setupFrontendFormFieldset(Fieldset $fieldset, UserConfig $userConfig);
-    
+
     /**
      * Generate a fieldset for verification form.
      * 
      * @param Fieldset $fieldset
      */
     public function setupVerifyFormFieldset(Fieldset $fieldset);
-    
+
     /**
      * Generate a fieldset which allows to set up a provider configuration.
      * 
@@ -83,14 +78,14 @@ interface ProviderGatewayContract
      * @param Fieldset $fieldset
      */
     public function setupBackendFormFieldset(Provider $provider, Fieldset $fieldset);
-    
+
     /**
      * Return an array of settings which will be stored in database for user config.
      * 
      * @return []
      */
     public function getConfigSettings();
-    
+
     /**
      * Check if user is verified by provided data.
      * 
@@ -106,5 +101,4 @@ interface ProviderGatewayContract
      * @return ProviderValidator
      */
     public function getValidator();
-    
 }

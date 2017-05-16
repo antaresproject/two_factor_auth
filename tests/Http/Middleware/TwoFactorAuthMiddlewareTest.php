@@ -18,17 +18,12 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Tests\Http\Middleware;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Tests\Http\Middleware;
-
-use Antares\TwoFactorAuth\Http\Middleware\TwoFactorAuthMiddleware;
+use Antares\Modules\TwoFactorAuth\Http\Middleware\TwoFactorAuthMiddleware;
 use Mockery as m;
 use Antares\Testing\TestCase;
-use Antares\TwoFactorAuth\Services\VerificationService;
+use Antares\Modules\TwoFactorAuth\Services\VerificationService;
 use Antares\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -36,7 +31,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Route;
 use Antares\Area\AreaServiceProvider;
 
-class TwoFactorAuthMiddlewareTest extends TestCase {
+class TwoFactorAuthMiddlewareTest extends TestCase
+{
 
     /**
      * @var Mockery
@@ -48,16 +44,18 @@ class TwoFactorAuthMiddlewareTest extends TestCase {
      */
     protected $guard;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->addProvider(AreaServiceProvider::class);
 
         parent::setUp();
 
-        $this->verificationService  = m::mock(VerificationService::class);
-        $this->guard                = m::mock(Guard::class);
+        $this->verificationService = m::mock(VerificationService::class);
+        $this->guard               = m::mock(Guard::class);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         parent::tearDown();
         m::close();
     }
@@ -65,25 +63,27 @@ class TwoFactorAuthMiddlewareTest extends TestCase {
     /**
      * @return TwoFactorAuthMiddleware
      */
-    protected function getMiddleware() {
+    protected function getMiddleware()
+    {
         return new TwoFactorAuthMiddleware($this->verificationService, $this->guard);
     }
 
-    public function testVerificationAsNotNeeded() {
+    public function testVerificationAsNotNeeded()
+    {
         $route = m::mock(Route::class);
 
         $this->verificationService
-            ->shouldReceive('mustBeVerified')
-            ->once()
-            ->with($route, $this->guard)
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('mustBeVerified')
+                ->once()
+                ->with($route, $this->guard)
+                ->andReturn(false)
+                ->getMock();
 
         $request = m::mock(Request::class)
-            ->shouldReceive('route')
-            ->once()
-            ->andReturn($route)
-            ->getMock();
+                ->shouldReceive('route')
+                ->once()
+                ->andReturn($route)
+                ->getMock();
 
         $next = function() {
             return 'next request';
@@ -92,24 +92,25 @@ class TwoFactorAuthMiddlewareTest extends TestCase {
         $this->assertEquals('next request', $this->getMiddleware()->handle($request, $next));
     }
 
-    public function testVerificationAsNeededAndAjax() {
+    public function testVerificationAsNeededAndAjax()
+    {
         $route = m::mock(Route::class);
 
         $this->verificationService
-            ->shouldReceive('mustBeVerified')
-            ->once()
-            ->with($route, $this->guard)
-            ->andReturn(true)
-            ->getMock();
+                ->shouldReceive('mustBeVerified')
+                ->once()
+                ->with($route, $this->guard)
+                ->andReturn(true)
+                ->getMock();
 
         $request = m::mock(Request::class)
-            ->shouldReceive('route')
-            ->once()
-            ->andReturn($route)
-            ->shouldReceive('ajax')
-            ->once()
-            ->andReturn(true)
-            ->getMock();
+                ->shouldReceive('route')
+                ->once()
+                ->andReturn($route)
+                ->shouldReceive('ajax')
+                ->once()
+                ->andReturn(true)
+                ->getMock();
 
         $next = function() {
             return 'next request';
@@ -121,28 +122,29 @@ class TwoFactorAuthMiddlewareTest extends TestCase {
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    public function testVerificationAsNeeded() {
-        $route          = m::mock(Route::class);
-        $redirectPath   = 'redirect-path';
+    public function testVerificationAsNeeded()
+    {
+        $route        = m::mock(Route::class);
+        $redirectPath = 'redirect-path';
 
         $this->verificationService
-            ->shouldReceive('mustBeVerified')
-            ->once()
-            ->with($route, $this->guard)
-            ->andReturn(true)
-            ->shouldReceive('getPathToVerificationAction')
-            ->once()
-            ->andReturn($redirectPath)
-            ->getMock();
+                ->shouldReceive('mustBeVerified')
+                ->once()
+                ->with($route, $this->guard)
+                ->andReturn(true)
+                ->shouldReceive('getPathToVerificationAction')
+                ->once()
+                ->andReturn($redirectPath)
+                ->getMock();
 
         $request = m::mock(Request::class)
-            ->shouldReceive('route')
-            ->once()
-            ->andReturn($route)
-            ->shouldReceive('ajax')
-            ->once()
-            ->andReturn(false)
-            ->getMock();
+                ->shouldReceive('route')
+                ->once()
+                ->andReturn($route)
+                ->shouldReceive('ajax')
+                ->once()
+                ->andReturn(false)
+                ->getMock();
 
         $next = function() {
             return 'next request';

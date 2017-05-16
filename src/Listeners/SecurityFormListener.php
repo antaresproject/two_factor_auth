@@ -18,15 +18,10 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Listeners;
+namespace Antares\Modules\TwoFactorAuth\Listeners;
 
 use Antares\Foundation\Events\SecurityFormSubmitted;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Exception;
 use Log;
 

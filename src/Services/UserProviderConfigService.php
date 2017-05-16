@@ -18,20 +18,15 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Services;
+namespace Antares\Modules\TwoFactorAuth\Services;
 
 use Illuminate\Contracts\Auth\Authenticatable as User;
 use Antares\Model\User as BaseUser;
 use Antares\Model\Role;
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
-use Antares\TwoFactorAuth\Model\UserConfig;
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Exception;
 
 class UserProviderConfigService
@@ -82,7 +77,7 @@ class UserProviderConfigService
      * Sets the user to the service.
      *
      * @param BaseUser $user
-     * @return \Antares\TwoFactorAuth\Services\UserProviderConfigService
+     * @return \Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService
      */
     public function setUser(BaseUser $user)
     {

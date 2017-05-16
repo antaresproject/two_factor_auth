@@ -18,22 +18,19 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth;
+namespace Antares\Modules\TwoFactorAuth;
 
 use Antares\Foundation\Events\SecurityFormSubmitted;
-use Antares\TwoFactorAuth\Http\Handlers\SecuritySection;
-use Antares\TwoFactorAuth\Listeners\SecurityFormListener;
+use Antares\Modules\TwoFactorAuth\Http\Handlers\SecuritySection;
+use Antares\Modules\TwoFactorAuth\Listeners\SecurityFormListener;
 use Antares\Foundation\Support\Providers\ModuleServiceProvider;
-use Antares\TwoFactorAuth\Http\Handlers\ResetUserConfig;
-use Antares\TwoFactorAuth\Http\Handlers\UserConfig;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
-use Antares\TwoFactorAuth\Http\Middleware\TwoFactorAuthMiddleware;
+use Antares\Modules\TwoFactorAuth\Http\Handlers\ResetUserConfig;
+use Antares\Modules\TwoFactorAuth\Http\Handlers\UserConfig;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Http\Middleware\TwoFactorAuthMiddleware;
 use Illuminate\Auth\Events\Logout as LogoutEvent;
-use Antares\Acl\RoleActionList;
 use Illuminate\Routing\Router;
-use Antares\Acl\Action;
-use Antares\Model\Role;
 use Event;
 
 class TwoFactorAuthServiceProvider extends ModuleServiceProvider
@@ -44,7 +41,7 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
      *
      * @var string|null
      */
-    protected $namespace = 'Antares\TwoFactorAuth\Http\Controllers\Admin';
+    protected $namespace = 'Antares\Modules\TwoFactorAuth\Http\Controllers\Admin';
 
     /**
      * The application or extension group namespace.

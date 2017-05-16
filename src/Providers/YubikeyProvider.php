@@ -18,25 +18,21 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Providers;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Providers;
-
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
 use MarcinKozak\Yubikey\Yubikey;
 use Antares\Contracts\Html\Form\Fieldset;
-use Antares\TwoFactorAuth\Model\UserConfig;
-use Antares\TwoFactorAuth\Model\Provider;
-use Antares\TwoFactorAuth\Validators\YubikeyValidator;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Validators\YubikeyValidator;
 use Exception;
 
 /**
  * Dump provider for Yubikey. Only for preview purpose.
  */
-class YubikeyProvider extends ProviderGateway {
+class YubikeyProvider extends ProviderGateway
+{
 
     /**
      * Validator instance.
@@ -57,81 +53,89 @@ class YubikeyProvider extends ProviderGateway {
      * @param TwoFactorProvidersService $twoFactorProvidersService
      * @param YubikeyValidator $validator
      */
-    public function __construct(TwoFactorProvidersService $twoFactorProvidersService, YubikeyValidator $validator) {
-        $this->twoFactorProvidersService    = $twoFactorProvidersService;
-        $this->validator                    = $validator;
+    public function __construct(TwoFactorProvidersService $twoFactorProvidersService, YubikeyValidator $validator)
+    {
+        $this->twoFactorProvidersService = $twoFactorProvidersService;
+        $this->validator                 = $validator;
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function getName() {
+    public function getName()
+    {
         return 'yubikey';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIconName() {
+    public function getIconName()
+    {
         return 'icon-yubikey.png';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLabel() {
+    public function getLabel()
+    {
         return trans('antares/two_factor_auth::yubikey.label');
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function setupFrontendFormFieldset(Fieldset $fieldset, UserConfig $userConfig) {
+    public function setupFrontendFormFieldset(Fieldset $fieldset, UserConfig $userConfig)
+    {
         $fieldset->control('input:text', 'usb')->field(function() {
             return '';
-        })->label( trans('antares/two_factor_auth::yubikey.usbKeyPrompt') );
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function setupVerifyFormFieldset(Fieldset $fieldset) {
-        $fieldset->control('input:text', 'verification_code')->label( trans('antares/two_factor_auth::google2fa.verificationCode') );
+        })->label(trans('antares/two_factor_auth::yubikey.usbKeyPrompt'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setupBackendFormFieldset(Provider $provider, Fieldset $fieldset) {
-        $settings   = array_get($provider, 'settings', []);
-        $areaId     = $provider->getAreaId();
-        
+    public function setupVerifyFormFieldset(Fieldset $fieldset)
+    {
+        $fieldset->control('input:text', 'verification_code')->label(trans('antares/two_factor_auth::google2fa.verificationCode'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setupBackendFormFieldset(Provider $provider, Fieldset $fieldset)
+    {
+        $settings = array_get($provider, 'settings', []);
+        $areaId   = $provider->getAreaId();
+
         $fieldset->control('input:text', $this->getAreaField($areaId, 'client_id'))
-            ->value(array_get($settings, 'client_id'))
-            ->label( trans('antares/two_factor_auth::yubikey.backend.client_id') );
+                ->value(array_get($settings, 'client_id'))
+                ->label(trans('antares/two_factor_auth::yubikey.backend.client_id'));
 
         $fieldset->control('input:text', $this->getAreaField($areaId, 'secret_key'))
-            ->value(array_get($settings, 'secret_key'))
-            ->label( trans('antares/two_factor_auth::yubikey.backend.secret_key') );
+                ->value(array_get($settings, 'secret_key'))
+                ->label(trans('antares/two_factor_auth::yubikey.backend.secret_key'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getConfigSettings() {
+    public function getConfigSettings()
+    {
         return [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isVerified(UserConfig $userConfig, array $data) {
+    public function isVerified(UserConfig $userConfig, array $data)
+    {
         $verificationCode = array_get($data, 'verification_code');
 
         try {
             return $this->getProviderFactoryBasedOnConfig($userConfig)->verify($verificationCode);
-        }
-        catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -141,7 +145,8 @@ class YubikeyProvider extends ProviderGateway {
      *
      * @return YubikeyValidator
      */
-    public function getValidator() {
+    public function getValidator()
+    {
         return $this->validator;
     }
 
@@ -151,14 +156,15 @@ class YubikeyProvider extends ProviderGateway {
      * @param UserConfig $userConfig
      * @return Yubikey
      */
-    protected function getProviderFactoryBasedOnConfig(UserConfig $userConfig) {
-        $areaId     = $userConfig->provider->getAreaId();
-        $area       = $this->twoFactorProvidersService->getAreaManager()->getById($areaId);
-        $provider   = $this->twoFactorProvidersService->getEnabledInArea($area);
+    protected function getProviderFactoryBasedOnConfig(UserConfig $userConfig)
+    {
+        $areaId   = $userConfig->provider->getAreaId();
+        $area     = $this->twoFactorProvidersService->getAreaManager()->getById($areaId);
+        $provider = $this->twoFactorProvidersService->getEnabledInArea($area);
 
         $data = [
-            'id'    => array_get($provider->settings, 'client_id'),
-            'key'   => array_get($provider->settings, 'secret_key'),
+            'id'  => array_get($provider->settings, 'client_id'),
+            'key' => array_get($provider->settings, 'secret_key'),
         ];
 
         return new Yubikey($data);

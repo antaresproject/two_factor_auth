@@ -18,17 +18,13 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Http\Breadcrumb;
+namespace Antares\Modules\TwoFactorAuth\Http\Breadcrumb;
 
 use Antares\Breadcrumb\Navigation;
 use DaveJamesMiller\Breadcrumbs\Generator;
 
-class Breadcrumb extends Navigation {
+class Breadcrumb extends Navigation
+{
 
     /**
      * Name of the breadcrumb.
@@ -40,7 +36,8 @@ class Breadcrumb extends Navigation {
     /**
      * Register a breadcrumb on an admin index page.
      */
-    public function onIndex() {
+    public function onIndex()
+    {
         $this->breadcrumbs->register(self::$name, function(Generator $breadcrumbs) {
             $breadcrumbs->push('General Configuration');
         });

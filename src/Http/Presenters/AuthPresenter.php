@@ -18,18 +18,13 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Http\Presenters;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Http\Presenters;
-
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Form\Factory as FormFactory;
 use Antares\Contracts\Html\Form\Fieldset;
 use Antares\Contracts\Html\Form\Grid as FormGrid;
-use Antares\TwoFactorAuth\Model\UserConfig;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 use Antares\Area\Contracts\AreaContract;
 
 class AuthPresenter

@@ -18,14 +18,10 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Validators;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Validators;
-
-class YubikeyValidator extends ProviderValidator {
+class YubikeyValidator extends ProviderValidator
+{
 
     /**
      * Validation rules.
@@ -33,8 +29,8 @@ class YubikeyValidator extends ProviderValidator {
      * @var array
      */
     protected $rules = [
-        'client_id'     => ['required'],
-        'secret_key'    => ['required'],
+        'client_id'  => ['required'],
+        'secret_key' => ['required'],
     ];
 
 }

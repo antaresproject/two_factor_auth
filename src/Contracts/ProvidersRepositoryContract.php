@@ -18,22 +18,18 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
+interface ProvidersRepositoryContract
+{
 
-
-
-
-namespace Antares\TwoFactorAuth\Contracts;
-
-interface ProvidersRepositoryContract {
-    
     /**
      * Return all providers.
      * 
      * @return Providers[]
      */
     public function all();
-    
+
     /**
      * Find a provider by its ID.
      * 
@@ -41,7 +37,7 @@ interface ProvidersRepositoryContract {
      * @return Provider
      */
     public function findById($providerId);
-    
+
     /**
      * Update the providers.
      *
@@ -49,5 +45,4 @@ interface ProvidersRepositoryContract {
      * @throws Exception
      */
     public function update(array $data);
-    
 }

@@ -18,18 +18,13 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Processor;
+namespace Antares\Modules\TwoFactorAuth\Processor;
 
 use Antares\Area\Contracts\AreaContract;
-use Antares\TwoFactorAuth\Contracts\AuthListener;
-use Antares\TwoFactorAuth\Services\TwoFactorProvidersService;
-use Antares\TwoFactorAuth\Services\UserProviderConfigService;
-use Antares\TwoFactorAuth\Http\Presenters\AuthPresenter;
+use Antares\Modules\TwoFactorAuth\Contracts\AuthListener;
+use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
+use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
+use Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter;
 
 class AuthProcessor
 {

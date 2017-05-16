@@ -18,12 +18,7 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Model;
+namespace Antares\Modules\TwoFactorAuth\Model;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Antares\Logger\Traits\LogRecorder;

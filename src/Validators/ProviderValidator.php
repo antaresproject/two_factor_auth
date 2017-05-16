@@ -18,16 +18,12 @@
  * @link       http://antaresproject.io
  */
 
-
-
-
-
-
-namespace Antares\TwoFactorAuth\Validators;
+namespace Antares\Modules\TwoFactorAuth\Validators;
 
 use Antares\Support\Validator;
 
-class ProviderValidator extends Validator {
+class ProviderValidator extends Validator
+{
 
     /**
      * List of events.
@@ -43,11 +39,12 @@ class ProviderValidator extends Validator {
      *
      * @return array
      */
-    public function getValidationRules() {
+    public function getValidationRules()
+    {
         $rules = [];
 
-        foreach($this->rules as $name => $rule) {
-            $ruleName = sprintf('2fa.*.settings.%s', $name);
+        foreach ($this->rules as $name => $rule) {
+            $ruleName         = sprintf('2fa.*.settings.%s', $name);
             $rules[$ruleName] = $rule;
         }
 

@@ -18,7 +18,7 @@
  * @link       http://antaresproject.io
  */
 
-namespace Antares\TwoFactorAuth\Services;
+namespace Antares\Modules\TwoFactorAuth\Services;
 
 use Illuminate\Session\Store as Session;
 

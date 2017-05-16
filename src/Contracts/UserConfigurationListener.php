@@ -18,14 +18,9 @@
  * @link       http://antaresproject.io
  */
 
+namespace Antares\Modules\TwoFactorAuth\Contracts;
 
-
-
-
-
-namespace Antares\TwoFactorAuth\Contracts;
-
-use Antares\TwoFactorAuth\Model\Provider;
+use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
 use Antares\Area\Contracts\AreaContract;
 
