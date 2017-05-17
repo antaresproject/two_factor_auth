@@ -1,4 +1,4 @@
-# Antares Project Two Factor Auth Component
+# Antares Two Factor Auth Component
 
 [![Laravel 5.4](https://img.shields.io/badge/Laravel-5.4-orange.svg)](http://laravel.com)
 [![Coverage Status](https://coveralls.io/repos/github/antaresproject/project/badge.svg?branch=master)](https://coveralls.io/github/antaresproject/project?branch=master)
@@ -11,16 +11,16 @@
 
 ## Documentation
 
-Antares Project Two Factor Auth Component documentation is not finished yet.
+Antares Two Factor Auth Component documentation is not finished yet.
 
-Full Antares Project documentation can be found at [antaresproject.io/docs](http://antaresproject.io/docs).
+Full Antares documentation can be found at [antaresproject.io/docs](http://antaresproject.io/docs).
 
 
 ## Changelog
 
-Antares Project Two Factor Auth changelog can be found in release notes [antaresproject.io/docs/site/getting_started/changelog/#Two Factor Auth](http://antaresproject.io/docs/site/getting_started/changelog/index.html#Two Factor Auth).
+Antares Two Factor Auth changelog can be found in release notes [antaresproject.io/docs/site/getting_started/changelog/#Two Factor Auth](http://antaresproject.io/docs/site/getting_started/changelog/index.html#Two Factor Auth).
 
-You can find full Antares Project changelog in Antares Project Documentation [antaresproject.io/docs/site/getting_started/changelog](http://antaresproject.io/docs/site/getting_started/changelog/index.html).
+You can find full Antares changelog in Antares Documentation [antaresproject.io/docs/site/getting_started/changelog](http://antaresproject.io/docs/site/getting_started/changelog/index.html).
 
 ## Issues
 
