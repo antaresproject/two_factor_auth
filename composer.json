@@ -1,5 +1,5 @@
 {
-    "name": "antaresproject/module-two-factor-auth",
+    "name": "antaresproject/module-two_factor_auth",
     "description": "Two Factor Authentication Manager Antares",
     "type": "antaresproject-module",
     "homepage": "https://github.com/antaresproject/two_factor_auth",
