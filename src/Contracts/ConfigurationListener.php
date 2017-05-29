@@ -34,7 +34,7 @@ interface ConfigurationListener
      * @param Provider $provider
      * @param Builder $form
      */
-    public function showProviderConfiguration(AreaContract $area, Provider $provider, Builder $form);
+    public function showProviderConfiguration($area, Provider $provider, Builder $form);
 
     /**
      * Set failure message.

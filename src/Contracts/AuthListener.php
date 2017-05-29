@@ -47,5 +47,5 @@ interface AuthListener
      * @param AreaContract $area
      * @param boolean $withError (default false)
      */
-    public function getVerify(AreaContract $area, $withError = false);
+    public function getVerify($area, $withError = false);
 }

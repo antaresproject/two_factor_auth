@@ -120,8 +120,9 @@ class UserConfigurationController extends AdminController implements UserConfigu
      * @param AreaContract $area
      * @return mixed
      */
-    public function getConfiguration(AreaContract $area)
+    public function getConfiguration($area)
     {
+        $area = app(\Antares\Area\AreaManager::class)->getById($area);
         return $this->processor->configure($this, $area);
     }
 

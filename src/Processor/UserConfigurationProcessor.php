@@ -108,7 +108,9 @@ class UserConfigurationProcessor
     {
         $provider   = $this->twoFactorProvidersService->getEnabledInArea($area);
         $userConfig = $this->userConfigService->saveConfig($provider);
-        $form       = $this->presenter->configure($userConfig, $area, $provider);
+
+
+        $form = $this->presenter->configure($userConfig, $area, $provider);
 
         $this->dispatcher->fire('antares.form: two_factor_auth', [$provider, $form]);
 

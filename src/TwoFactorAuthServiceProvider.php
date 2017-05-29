@@ -104,7 +104,6 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
         Event::listen(LogoutEvent::class, function() use($twoFaProviderService) {
             $twoFaProviderService->getAuthStore()->unverify();
         });
-
         publish('two_factor_auth', 'assets.scripts');
         listen('datatables:admin/control/users/index:after.action.edit', function($actions, $row) {
             $html = app('html');

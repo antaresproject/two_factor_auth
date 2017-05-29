@@ -72,8 +72,10 @@ class AuthController extends AdminController implements AuthListener
     /**
      * {@inheritdoc}
      */
-    public function getVerify(AreaContract $area, $withError = false)
+    public function getVerify($area, $withError = false)
     {
+
+        $area = app(\Antares\Area\AreaManager::class)->getById($area);
         if (!$this->userConfigurationProcessor->isConfigured($area)) {
             return redirect()->to(handles('two_factor_auth.get.configuration', compact('area')));
         }

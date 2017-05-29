@@ -76,9 +76,10 @@ class ConfigurationController extends AdminController implements ConfigurationLi
      * @param Provider $provider
      * @return mixed
      */
-    public function edit($area, Provider $provider)
+    public function edit($area, $provider)
     {
-        $area = (!$area instanceof AreaContract) ? app(\Antares\Area\Contracts\AreaManagerContract::class)->getById($area) : $area;
+        $provider = Provider::query()->findOrFail($provider);
+        $area     = (!$area instanceof AreaContract) ? app(\Antares\Area\Contracts\AreaManagerContract::class)->getById($area) : $area;
 
 
         return $this->processor->edit($this, $area, $provider);

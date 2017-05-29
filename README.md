@@ -1,4 +1,4 @@
-# Antares Two Factor Auth Component
+# Antares Two Factor Auth Module
 
 [![Laravel 5.4](https://img.shields.io/badge/Laravel-5.4-orange.svg)](http://laravel.com)
 [![Coverage Status](https://coveralls.io/repos/github/antaresproject/project/badge.svg?branch=master)](https://coveralls.io/github/antaresproject/project?branch=master)
@@ -9,9 +9,13 @@
 [![GitHub stars](https://img.shields.io/github/stars/antaresproject/project.svg)](https://github.com/antaresproject/project/stargazers)
 [![GitHub license](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://raw.githubusercontent.com/antaresproject/project/master/LICENSE)
 
+Antares Two Factor Auth is a package which provides method of confirming a user's identity by utilizing two different authentication components. Implemented with Google and Yubikey authenticators.
+
+![two_factor_auth](docs/img/two_factor_auth.PNG)
+
 ## Documentation
 
-Antares Two Factor Auth Component documentation is not finished yet.
+Antares Two Factor Auth Module documentation is not finished yet.
 
 Full Antares documentation can be found at [antaresproject.io/docs](http://antaresproject.io/docs).
 

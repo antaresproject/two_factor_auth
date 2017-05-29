@@ -70,7 +70,7 @@ class UserProviderConfigService
     {
         $this->userConfigRepository = $userConfigRepository;
         $this->service              = $service->bind();
-        $this->user                 = $user;
+        $this->user                 = is_null($user) ? user() : $user;
     }
 
     /**
@@ -161,7 +161,7 @@ class UserProviderConfigService
     public function saveConfig(Provider $provider)
     {
         $data = [
-            'user_id'     => $this->user->id,
+            'user_id'     => !is_null($this->user) ? $this->user->id : user()->id,
             'provider_id' => $provider->id,
             'settings'    => $provider->getProviderGateway()->getConfigSettings(),
         ];
