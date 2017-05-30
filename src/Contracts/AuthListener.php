@@ -22,7 +22,6 @@ namespace Antares\Modules\TwoFactorAuth\Contracts;
 
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
-use Antares\Area\Contracts\AreaContract;
 
 interface AuthListener
 {
@@ -38,13 +37,13 @@ interface AuthListener
     /**
      * Redirect to URL based on an area.
      * 
-     * @param AreaContract $area
+     * @param String $area
      */
-    public function authenticate(AreaContract $area);
+    public function authenticate($area);
 
     /**
      * 
-     * @param AreaContract $area
+     * @param String $area
      * @param boolean $withError (default false)
      */
     public function getVerify($area, $withError = false);

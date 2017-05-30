@@ -21,13 +21,14 @@
 namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
 use Antares\Modules\TwoFactorAuth\Processor\UserConfigurationProcessor;
-use Antares\Foundation\Http\Controllers\AdminController;
 use Antares\Modules\TwoFactorAuth\Processor\AuthProcessor;
 use Antares\Modules\TwoFactorAuth\Contracts\AuthListener;
+use Antares\Foundation\Http\Controllers\AdminController;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Illuminate\Support\Facades\Redirect;
 use Antares\Area\Contracts\AreaContract;
 use Antares\Contracts\Html\Builder;
+use Antares\Area\AreaManager;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -75,7 +76,7 @@ class AuthController extends AdminController implements AuthListener
     public function getVerify($area, $withError = false)
     {
 
-        $area = app(\Antares\Area\AreaManager::class)->getById($area);
+        $area = app(AreaManager::class)->getById($area);
         if (!$this->userConfigurationProcessor->isConfigured($area)) {
             return redirect()->to(handles('two_factor_auth.get.configuration', compact('area')));
         }
@@ -96,11 +97,9 @@ class AuthController extends AdminController implements AuthListener
      * @param Request $request
      * @return View
      */
-    public function postVerify(AreaContract $area, Request $request)
+    public function postVerify($area, Request $request)
     {
-//        if (!$this->userConfigurationProcessor->isConfigured($area)) {
-//            return redirect()->to(handles('two_factor_auth.get.configuration', compact('area')));
-//        }
+        $area = app(AreaManager::class)->getById($area);
         return $this->processor->verifyCredentials($this, $area, $request->input());
     }
 
@@ -124,8 +123,9 @@ class AuthController extends AdminController implements AuthListener
     /**
      * {@inheritdoc}
      */
-    public function authenticate(AreaContract $area)
+    public function authenticate($area)
     {
+        $area = app(AreaManager::class)->getById($area);
         if ($area->getId() === 'client') {
             return redirect()->to('/');
         }

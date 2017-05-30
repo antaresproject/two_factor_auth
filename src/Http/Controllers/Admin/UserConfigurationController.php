@@ -26,6 +26,7 @@ use Antares\Modules\TwoFactorAuth\Processor\UserConfigurationProcessor;
 use Antares\Modules\TwoFactorAuth\Contracts\UserConfigurationListener;
 use Antares\Foundation\Http\Controllers\AdminController;
 use Antares\Area\Contracts\AreaContract;
+use Antares\Area\AreaManager;
 use Antares\Model\User;
 
 class UserConfigurationController extends AdminController implements UserConfigurationListener
@@ -54,13 +55,13 @@ class UserConfigurationController extends AdminController implements UserConfigu
      * Enable the available provider in the area for the user.
      *
      * @param User $user
-     * @param AreaContract $area
+     * @param String $area
      * @return mixed
      */
-    public function enable(User $user, AreaContract $area)
+    public function enable(User $user, $area)
     {
+        $area = app(AreaManager::class)->getById($area);
         request()->session()->set('return_url', request()->headers->get('referer'));
-
         return $this->processor->enable($this, $user, $area);
     }
 
@@ -68,11 +69,12 @@ class UserConfigurationController extends AdminController implements UserConfigu
      * Disable the available provider in the area for the user.
      *
      * @param User $user
-     * @param AreaContract $area
+     * @param String $area
      * @return mixed
      */
-    public function disable(User $user, AreaContract $area)
+    public function disable(User $user, $area)
     {
+        $area = app(AreaManager::class)->getById($area);
         return $this->processor->disable($this, $user, $area);
     }
 
@@ -122,7 +124,7 @@ class UserConfigurationController extends AdminController implements UserConfigu
      */
     public function getConfiguration($area)
     {
-        $area = app(\Antares\Area\AreaManager::class)->getById($area);
+        $area = app(AreaManager::class)->getById($area);
         return $this->processor->configure($this, $area);
     }
 
@@ -154,7 +156,6 @@ class UserConfigurationController extends AdminController implements UserConfigu
      */
     public function afterConfiguration($form)
     {
-        //return $this->enableSuccess($msg);
         return view('antares/two_factor_auth::admin.auth.configuration', compact('form'));
     }
 

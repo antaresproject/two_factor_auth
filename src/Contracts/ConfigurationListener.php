@@ -20,8 +20,6 @@
 
 namespace Antares\Modules\TwoFactorAuth\Contracts;
 
-use Antares\Area\Contracts\AreaContract;
-use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
 
 interface ConfigurationListener
@@ -30,11 +28,9 @@ interface ConfigurationListener
     /**
      * Show configuration page for a provider.
      *
-     * @param AreaContract $area
-     * @param Provider $provider
      * @param Builder $form
      */
-    public function showProviderConfiguration($area, Provider $provider, Builder $form);
+    public function showProviderConfiguration(Builder $form);
 
     /**
      * Set failure message.

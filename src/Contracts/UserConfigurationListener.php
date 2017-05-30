@@ -22,7 +22,6 @@ namespace Antares\Modules\TwoFactorAuth\Contracts;
 
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
-use Antares\Area\Contracts\AreaContract;
 
 interface UserConfigurationListener
 {
@@ -66,13 +65,4 @@ interface UserConfigurationListener
      * @param Builder $form
      */
     public function showConfiguration(Provider $provider, Builder $form);
-
-    /**
-     * Handle listener after the configuration page.
-     *
-     * @param AreaContract $area
-     * @param string $msg
-     * @return mixed
-     */
-    //public function afterConfiguration(AreaContract $area, $msg);
 }

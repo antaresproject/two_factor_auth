@@ -23,8 +23,9 @@ namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 use Antares\Modules\TwoFactorAuth\Processor\ConfigurationProcessor;
 use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationListener;
 use Antares\Foundation\Http\Controllers\AdminController;
-use Antares\Area\Contracts\AreaContract;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
+use Antares\Area\Contracts\AreaManagerContract;
+use Antares\Area\Contracts\AreaContract;
 use Antares\Contracts\Html\Builder;
 use Illuminate\Http\Request;
 
@@ -79,7 +80,7 @@ class ConfigurationController extends AdminController implements ConfigurationLi
     public function edit($area, $provider)
     {
         $provider = Provider::query()->findOrFail($provider);
-        $area     = (!$area instanceof AreaContract) ? app(\Antares\Area\Contracts\AreaManagerContract::class)->getById($area) : $area;
+        $area     = (!$area instanceof AreaContract) ? app(AreaManagerContract::class)->getById($area) : $area;
 
 
         return $this->processor->edit($this, $area, $provider);
@@ -100,7 +101,7 @@ class ConfigurationController extends AdminController implements ConfigurationLi
     /**
      * {@inheritdoc}
      */
-    public function showProviderConfiguration(AreaContract $area, Provider $provider, Builder $form)
+    public function showProviderConfiguration(Builder $form)
     {
         if ($this->request->ajax()) {
             return $form->render();
