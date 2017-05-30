@@ -28,6 +28,7 @@ use Antares\Modules\TwoFactorAuth\Collection\ProvidersCollection;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Antares\Area\Contracts\AreaContract;
+use Antares\Area\AreaManager;
 
 class TwoFactorProvidersService
 {
@@ -229,11 +230,12 @@ class TwoFactorProvidersService
     /**
      * Check if authentication is required for the given area.
      *
-     * @param AreaContract $area
+     * @param String $area
      * @return boolean
      */
     public function isRequiredInArea(AreaContract $area)
     {
+
         $enabledProvider = $this->getEnabledInArea($area);
 
         if ($enabledProvider === null) {

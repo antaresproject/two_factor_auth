@@ -24,8 +24,6 @@ use Antares\Modules\TwoFactorAuth\Services\VerificationService;
 use Antares\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Closure;
-use function response;
-use function redirect;
 
 class TwoFactorAuthMiddleware
 {

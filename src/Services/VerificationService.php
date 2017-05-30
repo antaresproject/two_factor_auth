@@ -104,6 +104,10 @@ class VerificationService
         }
 
         $currentArea = $this->areaManager->getCurrentArea();
+        if (is_string($currentArea)) {
+            $currentArea = $this->areaManager->getById($currentArea);
+        }
+
 
         if ($this->service->bind()->isRequiredInArea($currentArea)) {
             return true;
