@@ -64,11 +64,6 @@ class ProvidersRepositoryTest extends TestCase
         $this->repository = new ProvidersRepository($this->provider->getMock());
     }
 
-    public function tearDown()
-    {
-        m::close();
-    }
-
     public function testAll()
     {
         $this->builder
@@ -98,7 +93,7 @@ class ProvidersRepositoryTest extends TestCase
 
     public function testSuccessUpdateAsDisabled()
     {
-;
+        ;
         $data = [
             'admin'  => [
                 'enabled' => false,

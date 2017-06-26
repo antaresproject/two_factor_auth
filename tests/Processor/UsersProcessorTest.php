@@ -68,12 +68,6 @@ class UsersProcessorTest extends TestCase
         $this->userConfigRepository = m::mock(UserConfigRepositoryContract::class);
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     /**
      * 
      * @return UsersProcessor

@@ -88,12 +88,6 @@ class ConfigurationProcessorTest extends TestCase
         $this->providersRepository = m::mock(ProvidersRepositoryContract::class);
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     /**
      * 
      * @return ConfigurationProcessor
@@ -150,10 +144,15 @@ class ConfigurationProcessorTest extends TestCase
 
         $listener = m::mock(ConfigurationListener::class)
                 ->shouldReceive('showProviderConfiguration')
-                ->with($area, $provider, $form)
+                ->with($form)
                 ->once()
                 ->andReturn(m::mock(View::class))
                 ->getMock();
+
+        $service = m::mock(TwoFactorProvidersService::class);
+        $this->app->instance(TwoFactorProvidersService::class, $service);
+
+
 
         $response = $this->getProcessor()->edit($listener, $area, $provider);
 

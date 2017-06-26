@@ -105,12 +105,6 @@ class UserConfigurationProcessorTest extends TestCase
         $this->providersRepository = m::mock(ProvidersRepositoryContract::class);
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     /**
      *
      * @return UserConfigurationProcessor
@@ -164,6 +158,15 @@ class UserConfigurationProcessorTest extends TestCase
                 ->with(m::type('Object'))
                 ->andReturn($returnValue)
                 ->getMock();
+
+        //$this->app->instance(\Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter::class, m::mock(\Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter::class));
+        $this->app[TwoFactorProvidersService::class] = $service                                     = m::mock(TwoFactorProvidersService::class);
+        $service->shouldReceive('bind')->withNoArgs()->andReturnSelf()
+                ->shouldReceive('getEnabledInArea')->with(m::type('Object'))->andReturn($provider                                    = m::mock(\Antares\Modules\TwoFactorAuth\Model\Provider::class));
+
+        $provider->shouldReceive('getId')->withNoArgs()->andReturn('antares')
+                ->shouldReceive('getProviderGateway')->withNoArgs()->andReturnSelf()
+                ->shouldReceive('setupVerifyFormFieldset')->withAnyArgs()->andReturnSelf();
 
         $this->assertEquals($returnValue, $this->getProcessor()->markAsConfigured($listener, $area));
     }

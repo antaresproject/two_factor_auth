@@ -78,12 +78,6 @@ class VerificationServiceTest extends TestCase
         $this->urlGenerator              = m::mock(UrlGenerator::class);
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-        m::close();
-    }
-
     /**
      * @return VerificationService
      */

@@ -135,9 +135,6 @@ class UserConfigurationProcessor
         $form       = app(\Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter::class)->verify($userConfig, $area, $provider, $secretKey);
 
 
-        //$this->userConfigService->setAsConfigured($userConfig);
-        //$msg = trans('antares/two_factor_auth::configuration.responses.enable.success', ['area' => $area->getLabel()]);
-
         return $listener->afterConfiguration($form);
     }
 
