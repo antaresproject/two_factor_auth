@@ -34,7 +34,7 @@ Please follow [Issue Reporting Guide](http://www.docs.antaresproject.io/php-fram
 
 ## Contribution
 
-Please follow [Contribution Guide](http://www.docs.antaresproject.io/php-framework/getting-started/contributing) before making a pull request.
+Please follow [Contribution Guide](http://www.docs.antaresproject.io/php-framework/getting-started/contribution-guide) before making a pull request.
 
 ## Community
 
