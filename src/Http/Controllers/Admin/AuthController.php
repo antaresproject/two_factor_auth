@@ -20,6 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
+use Antares\Area\Model\Area;
 use Antares\Modules\TwoFactorAuth\Processor\UserConfigurationProcessor;
 use Antares\Modules\TwoFactorAuth\Processor\AuthProcessor;
 use Antares\Modules\TwoFactorAuth\Contracts\AuthListener;
@@ -75,12 +76,11 @@ class AuthController extends AdminController implements AuthListener
      */
     public function getVerify($area, $withError = false)
     {
-
         $area = app(AreaManager::class)->getById($area);
+
         if (!$this->userConfigurationProcessor->isConfigured($area)) {
             return redirect()->to(handles('two_factor_auth.get.configuration', compact('area')));
         }
-
 
         if ($withError) {
             $message = trans('antares/two_factor_auth::auth.wrong_credentials');
@@ -123,9 +123,8 @@ class AuthController extends AdminController implements AuthListener
     /**
      * {@inheritdoc}
      */
-    public function authenticate($area)
+    public function authenticate(Area $area)
     {
-        $area = app(AreaManager::class)->getById($area);
         if ($area->getId() === 'client') {
             return redirect()->to('/');
         }

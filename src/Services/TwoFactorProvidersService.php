@@ -28,7 +28,6 @@ use Antares\Modules\TwoFactorAuth\Collection\ProvidersCollection;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Antares\Area\Contracts\AreaContract;
-use Antares\Area\AreaManager;
 
 class TwoFactorProvidersService
 {
@@ -190,11 +189,13 @@ class TwoFactorProvidersService
     public function getAreaProvidersCollection()
     {
         $collection = new Collection;
+
         foreach ($this->providers as $model) {
             $area = $this->areaManager->getById($model->area);
             if (is_null($area)) {
                 continue;
             }
+
             $areaProviders = $collection->get($area->getId());
             if ($areaProviders === null) {
                 $areaProviders = new AreaProviders($area);
@@ -216,8 +217,8 @@ class TwoFactorProvidersService
      */
     public function getEnabledInArea(AreaContract $area)
     {
-
         $providers = $this->providers->filterByArea($area->getId());
+
         foreach ($providers as $provider) {
             if ($provider->isEnabled()) {
                 return $provider;
@@ -235,7 +236,6 @@ class TwoFactorProvidersService
      */
     public function isRequiredInArea(AreaContract $area)
     {
-
         $enabledProvider = $this->getEnabledInArea($area);
 
         if ($enabledProvider === null) {

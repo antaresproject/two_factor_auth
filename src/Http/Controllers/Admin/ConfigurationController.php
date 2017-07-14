@@ -20,6 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
+use Antares\Area\Model\Area;
 use Antares\Modules\TwoFactorAuth\Processor\ConfigurationProcessor;
 use Antares\Modules\TwoFactorAuth\Contracts\ConfigurationListener;
 use Antares\Foundation\Http\Controllers\AdminController;
@@ -101,7 +102,7 @@ class ConfigurationController extends AdminController implements ConfigurationLi
     /**
      * {@inheritdoc}
      */
-    public function showProviderConfiguration(Builder $form)
+    public function showProviderConfiguration(Area $area, Provider $provider, Builder $form)
     {
         if ($this->request->ajax()) {
             return $form->render();

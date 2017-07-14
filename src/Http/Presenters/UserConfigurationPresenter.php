@@ -100,7 +100,7 @@ class UserConfigurationPresenter
                     'area' => $area,
                     'line' => HTML::link($url, trans('antares/two_factor_auth::configuration.disable.label'), $attrs),
                 ];
-            } elseif (!$this->userProviderConfigService->hasEnabledArea($area)) {
+            } else {
                 $url   = handles('two_factor_auth.user.configuration.enable', compact('area', 'user'));
                 $attrs = [
                     'class'            => 'triggerable confirm',

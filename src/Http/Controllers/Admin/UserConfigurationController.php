@@ -20,6 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
+use Antares\Area\Model\Area;
 use Antares\Contracts\Html\Builder;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Modules\TwoFactorAuth\Processor\UserConfigurationProcessor;
@@ -143,11 +144,13 @@ class UserConfigurationController extends AdminController implements UserConfigu
     /**
      * Mark an area configuration as configured.
      *
-     * @param AreaContract $area
+     * @param Area $area
      * @return type
      */
-    public function postConfiguration(AreaContract $area)
+    public function postConfiguration($area)
     {
+        $area = app(AreaManager::class)->getById($area);
+
         return $this->processor->markAsConfigured($this, $area);
     }
 

@@ -52,6 +52,7 @@ class SecurityFormListener
     public function handle(SecurityFormSubmitted $securityFormSubmitted)
     {
         $data = $securityFormSubmitted->request->get('2fa', []);
+
         try {
             $this->providersRepository->update($data);
             $msg = trans('antares/two_factor_auth::configuration.responses.update.success');

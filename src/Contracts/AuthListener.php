@@ -20,6 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Contracts;
 
+use Antares\Area\Model\Area;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Contracts\Html\Builder;
 
@@ -37,9 +38,9 @@ interface AuthListener
     /**
      * Redirect to URL based on an area.
      * 
-     * @param String $area
+     * @param Area $area
      */
-    public function authenticate($area);
+    public function authenticate(Area $area);
 
     /**
      * 

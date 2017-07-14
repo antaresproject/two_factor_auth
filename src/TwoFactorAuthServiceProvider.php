@@ -29,6 +29,7 @@ use Antares\Modules\TwoFactorAuth\Http\Handlers\UserConfig;
 use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
 use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
 use Antares\Modules\TwoFactorAuth\Http\Middleware\TwoFactorAuthMiddleware;
+use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
 use Illuminate\Auth\Events\Logout as LogoutEvent;
 use Illuminate\Routing\Router;
 use Event;
@@ -71,7 +72,9 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
     {
         parent::register();
         $this->bindContracts();
+
         $this->app->singleton(TwoFactorProvidersService::class);
+        $this->app->singleton(UserProviderConfigService::class);
     }
 
     /**
@@ -104,9 +107,12 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
         Event::listen(LogoutEvent::class, function() use($twoFaProviderService) {
             $twoFaProviderService->getAuthStore()->unverify();
         });
-        publish('two_factor_auth', 'assets.scripts');
+
+        publish('two_factor_auth');
+
         listen('datatables:admin/control/users/index:after.action.edit', function($actions, $row) {
             $html = app('html');
+
             $actions->push($html->link(handles("antares::two_factor_auth/user/{$row->id}/reset"), trans('antares/two_factor_auth::users.reset_two_factor_auth'), [
                         'class'            => 'triggerable confirm',
                         'data-icon'        => 'info',

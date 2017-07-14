@@ -33,7 +33,7 @@ abstract class ProviderGateway implements ProviderGatewayContract
      */
     public function getIconUrl()
     {
-        return asset('packages/antares/two_factor_auth/img/' . $this->getIconName());
+        return asset('/public/packages/antares/two_factor_auth/img/' . $this->getIconName());
     }
 
     /**

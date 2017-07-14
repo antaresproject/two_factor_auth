@@ -20,6 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Services;
 
+use Antares\Area\AreaManager;
 use Antares\Area\Contracts\AreaManagerContract;
 use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
 use Antares\Contracts\Auth\Guard;
@@ -96,6 +97,8 @@ class VerificationService
         }
 
         if ($this->routeBelongsToComponent($route)) {
+            $this->userProviderConfigService->setUser($guard->user());
+
             return false;
         }
 
