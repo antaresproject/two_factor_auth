@@ -63,11 +63,6 @@ class UserConfigRepositoryTest extends TestCase
         $this->repository = new UserConfigRepository($this->userConfig->getMock());
     }
 
-    public function tearDown()
-    {
-        m::close();
-    }
-
     public function testSaveWithUpdate()
     {
         $providerId = 1;

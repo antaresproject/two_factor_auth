@@ -105,7 +105,7 @@ class ConfigurationProcessor
         Event::fire("antares.form: two_factor_auth", [$provider, $form]);
         Event::fire("antares.form: foundation.two_factor_auth", [$provider, $form, "foundation.two_factor_auth"]);
 
-        return $listener->showProviderConfiguration($area, $provider, $form);
+        return $listener->showProviderConfiguration($form);
     }
 
     /**

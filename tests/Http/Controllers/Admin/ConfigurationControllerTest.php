@@ -103,7 +103,7 @@ class ConfigurationControllerTest extends TestCase
                 ->shouldReceive('edit')
                 ->once()
                 ->andReturnUsing(function ($listener, $area, $provider) {
-                    return $listener->showProviderConfiguration($area, $provider, m::mock(Builder::class));
+                    return $listener->showProviderConfiguration(m::mock(Builder::class));
                 });
 
 
@@ -126,7 +126,7 @@ class ConfigurationControllerTest extends TestCase
                 ->shouldReceive('edit')
                 ->once()
                 ->andReturnUsing(function ($listener, $area, $provider) use($builder) {
-                    return $listener->showProviderConfiguration($area, $provider, $builder);
+                    return $listener->showProviderConfiguration($builder);
                 });
 
         $request = m::mock(Request::class)
