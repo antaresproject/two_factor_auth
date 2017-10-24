@@ -3,19 +3,19 @@
 
     $(document).on('change', '.two-factor-auth-area-provider-select', function () {
         var
-            $this = $(this),
-            value = $this.val(),
-            $container = $this.closest('.provider-area-block').find('.provider-area-configuration-block'),
-            $overlay = $this.closest('.col-group');
+                $this = $(this),
+                value = $this.val(),
+                $container = $this.closest('.provider-area-block').find('.provider-area-configuration-block'),
+                $overlay = $this.closest('.col-group');
 
         if (value === '0') {
             $container.empty();
         } else {
-            $overlay.LoadingOverlay('show');
+            //$overlay.LoadingOverlay('show');
             $.get(value).success(function (response) {
                 $container.html(response);
             }).complete(function () {
-                $overlay.LoadingOverlay('hide');
+                //$overlay.LoadingOverlay('hide');
             });
         }
     });
