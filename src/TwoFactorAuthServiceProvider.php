@@ -104,6 +104,9 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
         Event::listen(LogoutEvent::class, function() use($twoFaProviderService) {
             $twoFaProviderService->getAuthStore()->unverify();
         });
+        $container = app('antares.asset')->container('antares/foundation::application');
+        app('antares.asset.publisher')->link('two_factor_auth', ['img/icon-google_2fa.png', 'img/icon-yubikey.png']);
+
         publish('two_factor_auth', 'assets.scripts');
         listen('datatables:admin/control/users/index:after.action.edit', function($actions, $row) {
             $html = app('html');

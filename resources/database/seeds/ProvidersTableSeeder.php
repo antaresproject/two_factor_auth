@@ -47,6 +47,7 @@ class ProvidersTableSeeder extends Seeder
 
     public function __construct()
     {
+
         app()->register(TwoFactorAuthServiceProvider::class);
 
         $this->providerTableName = with(new Provider)->getTable();
@@ -64,12 +65,13 @@ class ProvidersTableSeeder extends Seeder
     public function run()
     {
         $this->down();
-        $areas       = $this->service->getAreaManager()->getAreas();
+        $areas       = $this->service->getAreaManager()->getAreas()->all();
         $currentDate = Carbon::now()->toDateTimeString();
         $inserts     = [];
 
         foreach ($areas as $area) {
             foreach ($this->registeredProviders as $provider) {
+
                 $inserts[] = [
                     'area'       => $area->getId(),
                     'name'       => $provider->getName(),
