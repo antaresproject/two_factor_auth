@@ -35,11 +35,11 @@ return [
             'class'    => PragmaRX\Google2FA\Google2FA::class,
             'provider' => Antares\Modules\TwoFactorAuth\Providers\Google2FAProvider::class,
         ],
-        [
-            'contract' => MarcinKozak\Yubikey\Yubikey::class,
-            'class'    => MarcinKozak\Yubikey\Yubikey::class,
-            'provider' => Antares\Modules\TwoFactorAuth\Providers\YubikeyProvider::class,
-        ],
+//        [
+//            'contract' => MarcinKozak\Yubikey\Yubikey::class,
+//            'class'    => MarcinKozak\Yubikey\Yubikey::class,
+//            'provider' => Antares\Modules\TwoFactorAuth\Providers\YubikeyProvider::class,
+//        ],
     ],
 ];
 

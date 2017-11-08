@@ -3,26 +3,29 @@
 {% endfor %}
 
 {% for fieldset in fieldsets %}
-    <fieldset>
-        {% if fieldset.name|length>0 %}
 
-        {% endif %}
-        {% for control in fieldset.controls() %}
-            <div class="col-group">
-                <div class="form-block">
-                    <div class="input-field input-field--group">
-                        <div class="col-dt-5 col-5 col-mb-5">
-                            {{ Form.label(control.name, control.label,{'class':'form-block__name'})|raw }}
-                        </div>
-                        <div class="col-dt-5 col-5 col-mb-5">
-                            {{ control.getField(row, control, [])|raw }}
+    {% if fieldset.name|length>0 %}
+
+    {% endif %}
+    {% for control in fieldset.controls() %}
+        <div class="input-field input-field--group">
+            <div class="col-mb-8 col-6 col-dt-4 col-ld-3">
+                {{ Form.label(control.name, control.label,{'class':'form-block__name'})|raw }}
+            </div>
+            <div class="col-mb-16 col-18 col-dt-10 col-ld-4">
+                {{ control.getField(row, control, [])|raw }}
+                {% if control.help|length>1 %}
+                    <div class="col-group">
+                        <div class="col-mb-24 col-24 col-dt-24 col-ld-24">
                             {% if control.help|length>1 %}
-                                {% include 'antares/foundation::layouts.antares.partials.form.vertical._description' %}             
+                                <div class="input-field__desc">
+                                    {{ control.help|raw }}
+                                </div>
                             {% endif %}
                         </div>
-                    </div>
-                </div>
+                    </div>          
+                {% endif %}
             </div>
-        {%endfor %}
-    </fieldset>
+        </div>
+    {%endfor %}   
 {%endfor %}

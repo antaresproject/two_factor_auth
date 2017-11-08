@@ -70,7 +70,6 @@ class UserConfigurationPresenter
     public function index(User $user, Collection $areaProvidersCollection)
     {
         $items = [];
-
         foreach ($areaProvidersCollection as $areaProviders) {
             /* @var $areaProviders AreaProviders */
 

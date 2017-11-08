@@ -33,7 +33,6 @@ use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Modules\TwoFactorAuth\Facades\AreaProviders;
 use Antares\Area\Contracts\AreaContract;
-use function trans;
 
 class ConfigurationPresenter implements PresenterContract
 {
@@ -99,8 +98,6 @@ class ConfigurationPresenter implements PresenterContract
      */
     public function index(Collection $areaProvidersCollection, FormBuilder $form)
     {
-        //$this->breadcrumb->onIndex();
-
         /* @var $form FormGrid */
         $form->extend(function(FormGrid $form) use($areaProvidersCollection) {
             $fieldsetName = trans('antares/two_factor_auth::configuration.fieldset');
@@ -213,7 +210,6 @@ class ConfigurationPresenter implements PresenterContract
         $form->hidden($this->getAreaField($area, 'enabled'), function($field) {
             $field->value = 0;
         });
-
         $form->fieldset($area->getLabel(), function(Fieldset $fieldset) use($area, $attributes, $options, $selected, $optionsData) {
             $fieldset->layout('antares/two_factor_auth::admin.configuration.fieldset');
 

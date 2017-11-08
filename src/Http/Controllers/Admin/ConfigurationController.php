@@ -79,8 +79,8 @@ class ConfigurationController extends AdminController implements ConfigurationLi
      */
     public function edit($area, $provider)
     {
-        $provider = Provider::query()->findOrFail($provider);
-        $area     = (!$area instanceof AreaContract) ? app(AreaManagerContract::class)->getById($area) : $area;
+
+        $area = (!$area instanceof AreaContract) ? app(AreaManagerContract::class)->getById($area) : $area;
 
 
         return $this->processor->edit($this, $area, $provider);
