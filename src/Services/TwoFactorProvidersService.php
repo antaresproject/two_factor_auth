@@ -21,6 +21,7 @@
 namespace Antares\Modules\TwoFactorAuth\Services;
 
 use Antares\Area\Contracts\AreaManagerContract;
+use Antares\Area\Model\Area;
 use Antares\Modules\TwoFactorAuth\Contracts\ProviderGatewayContract;
 use Antares\Modules\TwoFactorAuth\Facades\AreaProviders;
 use Illuminate\Support\Collection;
@@ -183,6 +184,22 @@ class TwoFactorProvidersService
     }
 
     /**
+     * @param Area $area
+     * @return AreaProviders|null
+     */
+    public function getAreaProvider($area)
+    {
+        /** @var $provider AreaProviders */
+        foreach ($this->getAreaProvidersCollection() as $provider) {
+            if ($provider->getArea()->getId() == ($area instanceof Area ? $area->getId() : $area)) {
+                return $provider;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the collection with areas and providers for each one.
      *
      * @return Collection
@@ -216,7 +233,6 @@ class TwoFactorProvidersService
      */
     public function getEnabledInArea(AreaContract $area)
     {
-
         $providers = $this->providers->filterByArea($area->getId());
         foreach ($providers as $provider) {
             if ($provider->isEnabled()) {
@@ -235,7 +251,6 @@ class TwoFactorProvidersService
      */
     public function isRequiredInArea(AreaContract $area)
     {
-
         $enabledProvider = $this->getEnabledInArea($area);
 
         if ($enabledProvider === null) {

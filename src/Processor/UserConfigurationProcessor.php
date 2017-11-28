@@ -24,6 +24,7 @@ use Antares\Modules\TwoFactorAuth\Http\Presenters\UserConfigurationPresenter;
 use Antares\Modules\TwoFactorAuth\Contracts\UserConfigurationListener;
 use Antares\Modules\TwoFactorAuth\Contracts\UserConfigRepositoryContract;
 use Antares\Area\Contracts\AreaContract;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
 use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
 use Antares\Model\User;
@@ -109,9 +110,7 @@ class UserConfigurationProcessor
         $provider   = $this->twoFactorProvidersService->getEnabledInArea($area);
         $userConfig = $this->userConfigService->saveConfig($provider);
 
-
         $form = $this->presenter->configure($userConfig, $area, $provider);
-
         $this->dispatcher->fire('antares.form: two_factor_auth', [$provider, $form]);
 
         return $listener->showConfiguration($provider, $form);
@@ -126,14 +125,28 @@ class UserConfigurationProcessor
      */
     public function markAsConfigured(UserConfigurationListener $listener, AreaContract $area)
     {
-
+        /** @var $service TwoFactorProvidersService */
         $service    = app(TwoFactorProvidersService::class);
         $service->bind();
         $provider   = $service->getEnabledInArea($area);
+
+        if ($id = (\Input::all()['user_id']) ?? null) {
+            $userConfig = app(UserConfig::class)
+                ->find($id);
+
+            $user = app(User::class)
+                ->find($userConfig->user_id);
+        }
+
+        $this->userConfigService->setUser($user ?? auth()->user());
+
         $userConfig = $this->userConfigService->getSettingsByArea($area);
         $secretKey  = $userConfig->settings['secret_key'];
-        $form       = app(\Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter::class)->verify($userConfig, $area, $provider, $secretKey);
+        $form       = app(\Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter::class)
+            ->verify($userConfig, $area, $provider, $secretKey);
 
+        $this->userConfigService->setAsConfigured($userConfig);
+        //$msg = trans('antares/two_factor_auth::configuration.responses.enable.success', ['area' => $area->getLabel()]);
 
         return $listener->afterConfiguration($form);
     }
@@ -150,18 +163,18 @@ class UserConfigurationProcessor
     {
         try {
             $userConfig = $this->getUserConfig($user, $area);
-
             $this->userConfigRepository->markAsEnabledById($userConfig->id);
+            $this->userConfigService->setUser($user);
 
-            if ($this->isConfigured($area)) {
-                $msg = trans('antares/two_factor_auth::configuration.responses.enable.success', ['area' => $area->getLabel()]);
-                return $listener->afterConfiguration($area, $msg);
+            if (!$userConfig->isConfigured()) {
+                return $this->configure($listener, $area);
             }
 
-            return $this->configure($listener, $area);
+            $msg = trans('antares/two_factor_auth::configuration.responses.enable.success', ['area' => $area->getLabel()]);
+
+            return $listener->enableSuccess($msg);
         } catch (Exception $e) {
             Log::emergency($e);
-
             $msg = trans('antares/two_factor_auth::configuration.responses.enable.fail', ['area' => $area->getLabel()]);
 
             return $listener->enableFailed($msg);

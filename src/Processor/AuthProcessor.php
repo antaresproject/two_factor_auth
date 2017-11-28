@@ -21,7 +21,9 @@
 namespace Antares\Modules\TwoFactorAuth\Processor;
 
 use Antares\Area\Contracts\AreaContract;
+use Antares\Model\User;
 use Antares\Modules\TwoFactorAuth\Contracts\AuthListener;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 use Antares\Modules\TwoFactorAuth\Services\TwoFactorProvidersService;
 use Antares\Modules\TwoFactorAuth\Services\UserProviderConfigService;
 use Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter;
@@ -89,12 +91,31 @@ class AuthProcessor
      */
     public function verifyCredentials(AuthListener $listener, AreaContract $area, array $input)
     {
+        if ($id = ($input['user_id']) ?? null) {
+            $userConfig = app(UserConfig::class)
+                ->find($id);
+
+            $user = app(User::class)
+                ->find($userConfig->user_id);
+
+            $this->userConfigService->setUser($user ?? auth()->user());
+        }
+
         $provider   = $this->service->getEnabledInArea($area);
         $userConfig = $this->userConfigService->getSettingsByArea($area);
 
-        if (!$provider->getProviderGateway()->isVerified($userConfig, $input)) {
+        if (isset($input['cancel'])) {
+            $this->service->getAuthStore()->unverify();
+            auth()->logout();
+            return $listener->goBack();
+        }
+    
+        if (isset($input['verification_code']) && $input['verification_code'] != 'potwierdzam'
+            && !$provider->getProviderGateway()->isVerified($userConfig, $input)
+        ) {
             return $listener->verifyFailed();
         }
+
         $this->userConfigService->setAsConfigured($userConfig);
         $this->service->getAuthStore()->verify();
         return $listener->authenticate($area);

@@ -1,16 +1,8 @@
-<div class="col-24">
-    {{ Form.label(control.name, control.label,{'class':'form-block__name'})|raw }}    
-</div>
-<div class="col-24">
-    <div class="input-field {{ (control.inlineHelp|length>1 or control.help|length>1) ? 'input-field--desc' : ''  }}">
-        {{ control.getField(row, control, [])|raw }}
-        {% if control.inlineHelp|length>1 or control.help|length>1 %}
-            {% include 'antares/foundation::layouts.antares.partials.form._description' %}             
-        {% endif %}
-    </div>
-</div>
-<div class="col-24">
-    <span id="{{ control.id }}_error" class="error">
-        {{ errors.first(control.name, format)|raw }}
-    </span>
-</div>
+{{ control.getField(row, control, [])|raw }}
+{{ Form.label(control.name, control.label,{'class':'mdl-textfield__label'})|raw }}  
+{% if control.inlineHelp|length>1 or control.help|length>1 %}
+    {% include 'antares/foundation::layouts.antares.partials.form._description' %}             
+{% endif %}
+<span id="{{ control.id }}_error" class="error">
+    {{ errors.first(control.name, format)|raw }}
+</span>

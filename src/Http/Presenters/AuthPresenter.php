@@ -10,12 +10,12 @@
  * This source file is subject to the 3-clause BSD License that is
  * bundled with this package in the LICENSE file.
  *
- * @package    Two factor auth
- * @version    0.9.0
- * @author     Antares Team
- * @license    BSD License (3-clause)
+ * @package        Two factor auth
+ * @version        0.9.0
+ * @author         Antares Team
+ * @license        BSD License (3-clause)
  * @copyright  (c) 2017, Antares
- * @link       http://antaresproject.io
+ * @link           http://antaresproject.io
  */
 
 namespace Antares\Modules\TwoFactorAuth\Http\Presenters;
@@ -32,12 +32,14 @@ class AuthPresenter
 
     /**
      * Form factory instance.
+     *
      * @var FormFactory
      */
     protected $formFactory;
 
     /**
      * AuthPresenter constructor.
+     *
      * @param FormFactory $formFactory
      */
     public function __construct(FormFactory $formFactory)
@@ -48,10 +50,10 @@ class AuthPresenter
     /**
      * Returns a form for a Two-Factor Auth login page.
      *
-     * @param UserConfig $user
+     * @param UserConfig   $user
      * @param AreaContract $area
-     * @param Provider $provider
-     * @param String $secretKey
+     * @param Provider     $provider
+     * @param String       $secretKey
      * @return \Antares\Contracts\Html\Builder
      */
     public function verify(UserConfig $user, AreaContract $area, Provider $provider, $secretKey = null)
@@ -76,14 +78,24 @@ class AuthPresenter
                     $form->fieldset($title, function (Fieldset $fieldset) use ($user, $provider) {
                         $provider->getProviderGateway()->setupVerifyFormFieldset($fieldset, $user);
 
+
                         $fieldset->control('button', 'button')
-                                ->attributes(['type' => 'submit', 'class' => 'btn btn-primary'])
+                                ->attributes(['type' => 'submit', 'class' => 'btn btn--submit btn--s-extra-large btn--primary mdl-button mdl-js-button mdl-js-ripple-effect mb20'])
                                 ->value(trans('Submit & Save'));
+
                         if (!$user->configured) {
                             $fieldset->control('button', 'cancel')
-                                    ->field(function() {
+                                    ->field(function () {
                                         return app('html')->link(handles('two_factor_auth.get.configuration', ['area' => area()]), trans('Go Back'), ['class' => 'btn btn--md btn--default mdl-button mdl-js-button']);
                                     });
+                        } else {
+                            $fieldset->control('button', 'cancel')
+                                    ->attributes([
+                                        'type'  => 'submit',
+                                        'name'  => 'cancel',
+                                        'class' => 'btn btn--md btn--default mdl-button mdl-js-button'
+                                    ])
+                                    ->value(trans('Go Back'));
                         }
                     });
                 });

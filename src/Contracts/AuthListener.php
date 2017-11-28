@@ -42,6 +42,11 @@ interface AuthListener
     public function authenticate($area);
 
     /**
+     * Go back to login page
+     */
+    public function goBack();
+
+    /**
      * 
      * @param String $area
      * @param boolean $withError (default false)

@@ -91,7 +91,6 @@ class VerificationService
     {
         if ($guard->guest()) {
             $this->service->getAuthStore()->unverify();
-
             return false;
         }
 
@@ -103,11 +102,11 @@ class VerificationService
             return false;
         }
 
-        $currentArea = $this->areaManager->getCurrentArea();
+        //$currentArea = $this->areaManager->getCurrentArea();
+        $currentArea = area();
         if (is_string($currentArea)) {
             $currentArea = $this->areaManager->getById($currentArea);
         }
-
 
         if ($this->service->bind()->isRequiredInArea($currentArea)) {
             return true;
@@ -129,7 +128,7 @@ class VerificationService
      */
     public function getPathToVerificationAction()
     {
-        return handles('two_factor_auth.get.verify', ['area' => $this->areaManager->getCurrentArea()]);
+        return handles('two_factor_auth.get.verify', ['area' => area()]);
     }
 
     /**

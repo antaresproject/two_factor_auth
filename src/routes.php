@@ -36,4 +36,3 @@ $router->group(['prefix' => 'two_factor_auth'], function (Router $router) {
     $router->match(['GET', 'POST'], 'user/area/{area}/configuration/save', ['as' => 'two_factor_auth.user.post.configuration', 'uses' => 'UserConfigurationController@postConfiguration']);
     $router->any('area/{area}/cancel', ['as' => 'two_factor_auth.get.cancel', 'uses' => 'AuthController@cancel']);
 });
-

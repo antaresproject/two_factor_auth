@@ -20,6 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
+use Antares\Area\Model\Area;
 use Antares\Modules\TwoFactorAuth\Processor\UserConfigurationProcessor;
 use Antares\Modules\TwoFactorAuth\Processor\AuthProcessor;
 use Antares\Modules\TwoFactorAuth\Contracts\AuthListener;
@@ -76,7 +77,7 @@ class AuthController extends AdminController implements AuthListener
     public function getVerify($area, $withError = false)
     {
 
-        $area = app(AreaManager::class)->getById($area);
+        $area = app(AreaManager::class)->getById($area->getId());
         if (!$this->userConfigurationProcessor->isConfigured($area)) {
             return redirect()->to(handles('two_factor_auth.get.configuration', compact('area')));
         }
@@ -99,13 +100,24 @@ class AuthController extends AdminController implements AuthListener
      */
     public function postVerify($area, Request $request)
     {
-        $area = app(AreaManager::class)->getById($area);
+        if (!$area instanceof Area) {
+            $area = app(AreaManager::class)->getById($area);
+        }
+
         return $this->processor->verifyCredentials($this, $area, $request->input());
     }
 
     public function verifyFailed()
     {
         return $this->redirectWithErrors(url()->previous(), new \Antares\Messages\MessageBag(['verification_code' => trans('antares/two_factor_auth::auth.invalid_verification_code')]));
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function goBack()
+    {
+        return redirect()->to(handles('login'));
     }
 
     /**
@@ -125,7 +137,7 @@ class AuthController extends AdminController implements AuthListener
      */
     public function authenticate($area)
     {
-        $area = app(AreaManager::class)->getById($area);
+        $area = app(AreaManager::class)->getById($area->getId());
         if ($area->getId() === 'client') {
             return redirect()->to('/');
         }

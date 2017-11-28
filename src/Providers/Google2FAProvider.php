@@ -20,7 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Providers;
 
-use PragmaRX\Google2FA\Contracts\Google2FA;
+use PragmaRX\Google2FA\Google2FA;
 use Antares\Contracts\Html\Form\Fieldset;
 use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 use Antares\Modules\TwoFactorAuth\Validators\Google2FAValidator;
@@ -99,7 +99,8 @@ class Google2FAProvider extends ProviderGateway
      */
     public function setupVerifyFormFieldset(Fieldset $fieldset)
     {
-        $fieldset->control('input:text', 'verification_code')->label(trans('antares/two_factor_auth::google2fa.confirm_code_label'));
+        $fieldset->control('input:text', 'verification_code')->label(trans('antares/two_factor_auth::google2fa.confirm_code_label'))
+                ->attributes(['class' => 'mdl-textfield__input']);
     }
 
     /**

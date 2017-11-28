@@ -20,8 +20,10 @@
 
 namespace Antares\Modules\TwoFactorAuth\Repositories;
 
+use Antares\Model\User;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Modules\TwoFactorAuth\Contracts\ProvidersRepositoryContract;
+use Antares\Modules\TwoFactorAuth\Model\UserConfig;
 use Exception;
 
 class ProvidersRepository implements ProvidersRepositoryContract
@@ -75,6 +77,21 @@ class ProvidersRepository implements ProvidersRepositoryContract
                     $this->provider->newQuery()->where('area', $areaId)->where('enabled', 1)->update(['enabled' => false]);
                     $this->provider->newQuery()->findOrFail($providerId)->fill($areaData)->save();
                 } else {
+                    $users = app(User::class)
+                        ->whereHas('roles', function($query) use ($areaId) {
+                            $query->where('tbl_roles.area', $areaId);
+                        })
+                        ->get()
+                        ->pluck('id')
+                        ->toArray();
+
+                    if (!empty($users)) {
+                        app(UserConfig::class)
+                            //->where('provider_id', $providerId)
+                            ->whereIn('user_id', $users)
+                            ->delete();
+                    }
+
                     $this->provider->newQuery()->where('area', $areaId)->update(['enabled' => false]);
                 }
             }

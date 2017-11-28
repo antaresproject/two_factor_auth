@@ -82,6 +82,7 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
 
         parent::boot();
         $router               = $this->app->make(Router::class);
+        /** @var $twoFaProviderService TwoFactorProvidersService */
         $twoFaProviderService = $this->app->make(TwoFactorProvidersService::class);
         $providers            = config('antares/two_factor_auth::providers', []);
 
@@ -90,6 +91,7 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
                 $this->app->bind($item['contract'], $item['class']);
             }
             $this->app->singleton($item['provider']);
+
             $twoFaProviderService->addProviderGateway($this->app->make($item['provider']));
         }
 
@@ -104,10 +106,8 @@ class TwoFactorAuthServiceProvider extends ModuleServiceProvider
         Event::listen(LogoutEvent::class, function() use($twoFaProviderService) {
             $twoFaProviderService->getAuthStore()->unverify();
         });
-        $container = app('antares.asset')->container('antares/foundation::application');
-        app('antares.asset.publisher')->link('two_factor_auth', ['img/icon-google_2fa.png', 'img/icon-yubikey.png']);
-
         publish('two_factor_auth', 'assets.scripts');
+        publish('two_factor_auth');
         listen('datatables:admin/control/users/index:after.action.edit', function($actions, $row) {
             $html = app('html');
             $actions->push($html->link(handles("antares::two_factor_auth/user/{$row->id}/reset"), trans('antares/two_factor_auth::users.reset_two_factor_auth'), [

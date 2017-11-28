@@ -20,6 +20,7 @@
 
 namespace Antares\Modules\TwoFactorAuth\Http\Controllers\Admin;
 
+use Antares\Area\Model\Area;
 use Antares\Contracts\Html\Builder;
 use Antares\Modules\TwoFactorAuth\Model\Provider;
 use Antares\Modules\TwoFactorAuth\Processor\UserConfigurationProcessor;
@@ -60,8 +61,10 @@ class UserConfigurationController extends AdminController implements UserConfigu
      */
     public function enable(User $user, $area)
     {
-        $area = app(AreaManager::class)->getById($area);
-        request()->session()->set('return_url', request()->headers->get('referer'));
+        if (!$area instanceof Area) {
+            $area = app(AreaManager::class)->getById($area);
+        }
+        request()->session()->put('return_url', request()->headers->get('referer'));
         return $this->processor->enable($this, $user, $area);
     }
 
@@ -74,7 +77,9 @@ class UserConfigurationController extends AdminController implements UserConfigu
      */
     public function disable(User $user, $area)
     {
-        $area = app(AreaManager::class)->getById($area);
+        if (!$area instanceof Area) {
+            $area = app(AreaManager::class)->getById($area);
+        }
         return $this->processor->disable($this, $user, $area);
     }
 
@@ -124,7 +129,9 @@ class UserConfigurationController extends AdminController implements UserConfigu
      */
     public function getConfiguration($area)
     {
-        $area = app(AreaManager::class)->getById($area);
+        if (!is_object($area)) {
+            $area = app(AreaManager::class)->getById($area);
+        }
         return $this->processor->configure($this, $area);
     }
 

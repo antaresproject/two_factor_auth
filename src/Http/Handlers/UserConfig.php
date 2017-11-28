@@ -74,25 +74,27 @@ class UserConfig
      */
     protected function extendForm(User $user, FormBuilder $form)
     {
-        $areaProviders = $this->twoFactorProviderService->getAreaProvidersCollection();
-        $items         = $this->usersPresenter->index($user, $areaProviders);
-
-        if (empty($items)) {
+        if (!$user->exists) {
             return;
         }
 
-        $form->extend(function(FormGrid $form) use($items) {
+        $this->usersPresenter->getUserProviderConfigService()->setUser($user);
+
+        $areaProvider = $this->twoFactorProviderService->getAreaProvider($user->roles()->first()->area);
+        $item = $this->usersPresenter->index($user, $areaProvider);
+
+        $form->extend(function(FormGrid $form) use($item) {
             $fieldsetName = trans('antares/two_factor_auth::configuration.index');
 
-            $form->findFieldsetOrCreateNew($fieldsetName, function(Fieldset $fieldset) use($items) {
+            $form->findFieldsetOrCreateNew($fieldsetName, function(Fieldset $fieldset) use($item) {
+                $fieldset->legend(trans('antares/two_factor_auth::configuration.two_factor_auth'));
 
-                foreach ($items as $item) {
-                    $fieldset->control('input:text', '', function($control) use($item) {
-                        $control->field(function() use($item) {
-                            return array_get($item, 'line');
-                        });
-                    })->label($item['area']->getLabel());
-                }
+                $fieldset->control('input:text', '', function($control) use($item) {
+                    $control->field(function() use($item) {
+                        return $item;
+                    });
+                })
+                ->label(trans('antares/two_factor_auth::users.manage_two_factor_auth_for_user'));
             });
         });
     }

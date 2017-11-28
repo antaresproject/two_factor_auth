@@ -101,7 +101,7 @@ class UserProviderConfigService
             throw new Exception('There is no enabled provider for the ' . $area->getLabel() . '.');
         }
 
-        $this->userConfig = $this->userConfigRepository->findByUserIdAndProviderId($this->user->id, $provider->id);
+        $this->userConfig = $this->userConfigRepository->findByUserIdAndProviderId(!empty($this->user) ? $this->user->id : auth()->user()->id, $provider->id);
 
         return $this->userConfig;
     }
