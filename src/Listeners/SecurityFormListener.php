@@ -57,7 +57,7 @@ class SecurityFormListener
             $msg = trans('antares/two_factor_auth::configuration.responses.update.success');
             return $securityFormSubmitted->listener->onSuccess($msg);
         } catch (Exception $e) {
-            Log::emergency($e->getMessage());
+            Log::error($e);
             return $securityFormSubmitted->listener->onFail($e->getMessage());
         }
     }

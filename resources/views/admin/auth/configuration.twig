@@ -1,17 +1,13 @@
 {% extends "antares/foundation::layouts.quest.main" %}
 {% block content %}
-    <div id="app-wrapper">
-        <div class="app-content page-login">
-            <section class="main-content">
-                <div class="login-box">
-                    <div class="login-box__header">
-                        <img src="{{ brand_logo('big','/img/logos/logo.png') }}" alt="{{ brand_title() }}">
-                    </div>
-
-                    {{ form|raw }}
-                    <div class="login-box__header"></div>
-                </div>
-            </section>
-        </div>
+    <div class="app-content page-login">
+        <div class="img-logo" style="background-image:url({{ brand_logo('big',asset('/img/logos/logo_default_full_mobile.png')) }})"></div>
+        <section class="main-content">
+            <div class="login-box">
+                {{ set_meta('header::class', 'main-header') }}
+                {{ form|raw }}
+            </div>
+        </section>
     </div>
+
 {% endblock %}

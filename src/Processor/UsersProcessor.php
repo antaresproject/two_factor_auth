@@ -58,7 +58,7 @@ class UsersProcessor
             $this->userConfigRepository->deleteByUserId($user->id);
             return $listener->resetSuccess();
         } catch (Exception $e) {
-            Log::emergency($e->getMessage());
+            Log::error($e);
             return $listener->resetFailed();
         }
     }

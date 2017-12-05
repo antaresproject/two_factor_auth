@@ -6,9 +6,9 @@
     {{ hidden|raw }}
 {% endfor %}
 {% for fieldset in fieldsets %}
-    <fieldset>            
+    <fieldset name="MDLForms">           
         {% if fieldset.name|length>0 %}
-            <legend>{{ fieldset.name }}</legend>
+            <legend class="text-center">{{ fieldset.name }}</legend>
         {% endif %}
         {% for control in fieldset.controls() %}                
             {% if control.type=='button' %}
@@ -16,7 +16,7 @@
             {% else %}   
                 <div class="form-block">
                     <div class="input-field">
-                        <div class="mdl-textfield mdl-textfield--AR mdl-js-textfield mdl-textfield--floating-label is-upgraded is-dirty" >
+                        <div class="mdl-textfield mdl-textfield--AR mdl-js-textfield mdl-textfield--floating-label is-upgraded is-dirty text-center" >
                             {% include 'antares/two_factor_auth::admin.auth.partials._field' with {control: control} %}                      
                         </div>
                     </div>

@@ -123,7 +123,7 @@ class ConfigurationProcessor
 
             return $listener->updateSuccess($msg);
         } catch (Exception $e) {
-            Log::emergency($e);
+            Log::error($e);
 
             $msg = trans('antares/two_factor_auth::configuration.responses.update.fail');
             return $listener->updateFailed($msg);

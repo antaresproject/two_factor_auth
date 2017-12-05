@@ -58,7 +58,7 @@ class UserConfigurationPresenter
     public function __construct(UserProviderConfigService $userProviderConfigService, FormFactory $formFactory)
     {
         $this->userProviderConfigService = $userProviderConfigService;
-        $this->formFactory = $formFactory;
+        $this->formFactory               = $formFactory;
     }
 
     /**
@@ -89,7 +89,7 @@ class UserConfigurationPresenter
         if ($enabled->isForced()) {
             return trans('antares/two_factor_auth::configuration.activated');
         } elseif ($this->userProviderConfigService->hasEnabledArea($area)) {
-            $url = handles('two_factor_auth.user.configuration.disable', compact('area', 'user'));
+            $url   = handles('two_factor_auth.user.configuration.disable', compact('area', 'user'));
             $attrs = [
                 'class'            => 'triggerable confirm',
                 'data-title'       => trans('antares/two_factor_auth::configuration.disable.title'),
@@ -99,9 +99,9 @@ class UserConfigurationPresenter
 
             return HTML::link($url, trans('antares/two_factor_auth::users.disable_two_factor_auth_for_user'), $attrs);
         } elseif (!$this->userProviderConfigService->hasEnabledArea($area)) {
-            $url = handles('two_factor_auth.user.configuration.enable', compact('area', 'user'));
+            $url   = handles('two_factor_auth.user.configuration.enable', compact('area', 'user'));
             $attrs = [
-                'class'            => 'triggerable confirm',
+                'class'            => 'triggerable confirm mt5',
                 'data-title'       => trans('antares/two_factor_auth::configuration.enable.title'),
                 'data-description' => trans('antares/two_factor_auth::configuration.enable.prompt'),
                 'data-icon'        => 'minus',
@@ -124,38 +124,38 @@ class UserConfigurationPresenter
     public function configure(UserConfig $user, AreaContract $area, Provider $provider)
     {
         return $this->formFactory->of('antares.two_factor_auth.provider.auth.configure', function (FormGrid $form) use ($user, $area, $provider) {
-            $url = handles('two_factor_auth.user.post.configuration', compact('area'));
+                    $url = handles('two_factor_auth.user.post.configuration', compact('area'));
 
-            $form->simple($url);
-            $form->name('Two-Factor Authentication User Settings Form');
-            $form->layout('antares/two_factor_auth::admin.auth.partials._form');
+                    $form->simple($url);
+                    $form->name('Two-Factor Authentication User Settings Form');
+                    $form->layout('antares/two_factor_auth::admin.auth.partials._form');
 
-            $form->hidden('provider_id', function ($field) use ($provider) {
-                $field->value = $provider->getId();
-            });
-            $form->hidden('user_id', function ($field) use ($user) {
-                $field->value = $user->getId();
-            });
-
-            $title = trans('antares/two_factor_auth::auth.configuration');
-
-            $form->fieldset($title, function (Fieldset $fieldset) use ($user, $provider) {
-                $provider->getProviderGateway()->setupFrontendFormFieldset($fieldset, $user);
-
-                $fieldset->control('button', 'button')
-                    ->attributes(['type' => 'submit', 'class' => 'btn btn-primary'])
-                    ->value(trans('Continue'));
-
-                $fieldset->control('button', 'cancel')
-                    ->field(function () {
-                        return app('html')->link(handles('two_factor_auth.get.cancel', [
-                            'area' => area()
-                        ]), trans('cancel'), [
-                            'class' => 'btn btn--md btn--default mdl-button mdl-js-button'
-                        ]);
+                    $form->hidden('provider_id', function ($field) use ($provider) {
+                        $field->value = $provider->getId();
                     });
-            });
-        });
+                    $form->hidden('user_id', function ($field) use ($user) {
+                        $field->value = $user->getId();
+                    });
+
+                    $title = trans('antares/two_factor_auth::auth.configuration');
+
+                    $form->fieldset($title, function (Fieldset $fieldset) use ($user, $provider) {
+                        $provider->getProviderGateway()->setupFrontendFormFieldset($fieldset, $user);
+
+                        $fieldset->control('button', 'button')
+                                ->attributes(['type' => 'submit', 'class' => 'btn btn--submit btn--s-extra-large btn--primary mdl-button mdl-js-button mdl-js-ripple-effect mb10'])
+                                ->value(trans('Continue'));
+
+                        $fieldset->control('button', 'cancel')
+                                ->field(function () {
+                                    return app('html')->link(handles('two_factor_auth.get.cancel', [
+                                                'area' => area()
+                                                    ]), trans('cancel'), [
+                                                'class' => 'btn btn--default btn--primary mdl-button mdl-js-button mdl-js-ripple-effect'
+                                    ]);
+                                });
+                    });
+                });
     }
 
 }

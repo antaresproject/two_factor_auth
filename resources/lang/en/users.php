@@ -17,12 +17,6 @@
  * @copyright  (c) 2017, Antares
  * @link       http://antaresproject.io
  */
-
-
-
-
-
-
 return [
     'reset-settings'                         => 'Reset Settings',
     'prompts'                                => [
@@ -36,5 +30,8 @@ return [
         ],
     ],
     'reset_two_factor_auth_user_description' => 'Reset two factor auth configuration for user :fullname',
-    'reset_two_factor_auth'                  => 'Reset two factor auth'
+    'reset_two_factor_auth'                  => 'Reset two factor auth',
+    'manage_two_factor_auth_for_user'        => 'Manage two factor auth',
+    'enable_two_factor_auth_for_user'        => 'Enable 2FA',
+    'disable_two_factor_auth_for_user'       => 'Disable 2FA'
 ];

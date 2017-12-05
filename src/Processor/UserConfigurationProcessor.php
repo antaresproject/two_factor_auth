@@ -126,16 +126,16 @@ class UserConfigurationProcessor
     public function markAsConfigured(UserConfigurationListener $listener, AreaContract $area)
     {
         /** @var $service TwoFactorProvidersService */
-        $service    = app(TwoFactorProvidersService::class);
+        $service  = app(TwoFactorProvidersService::class);
         $service->bind();
-        $provider   = $service->getEnabledInArea($area);
+        $provider = $service->getEnabledInArea($area);
 
         if ($id = (\Input::all()['user_id']) ?? null) {
             $userConfig = app(UserConfig::class)
-                ->find($id);
+                    ->find($id);
 
             $user = app(User::class)
-                ->find($userConfig->user_id);
+                    ->find($userConfig->user_id);
         }
 
         $this->userConfigService->setUser($user ?? auth()->user());
@@ -143,7 +143,7 @@ class UserConfigurationProcessor
         $userConfig = $this->userConfigService->getSettingsByArea($area);
         $secretKey  = $userConfig->settings['secret_key'];
         $form       = app(\Antares\Modules\TwoFactorAuth\Http\Presenters\AuthPresenter::class)
-            ->verify($userConfig, $area, $provider, $secretKey);
+                ->verify($userConfig, $area, $provider, $secretKey);
 
         $this->userConfigService->setAsConfigured($userConfig);
         //$msg = trans('antares/two_factor_auth::configuration.responses.enable.success', ['area' => $area->getLabel()]);
@@ -174,7 +174,7 @@ class UserConfigurationProcessor
 
             return $listener->enableSuccess($msg);
         } catch (Exception $e) {
-            Log::emergency($e);
+            Log::error($e);
             $msg = trans('antares/two_factor_auth::configuration.responses.enable.fail', ['area' => $area->getLabel()]);
 
             return $listener->enableFailed($msg);
@@ -200,7 +200,7 @@ class UserConfigurationProcessor
 
             return $listener->disableSuccess($msg);
         } catch (Exception $e) {
-            Log::emergency($e);
+            Log::error($e);
 
             $msg = trans('antares/two_factor_auth::configuration.responses.disable.fail', ['area' => $area->getLabel()]);
 
