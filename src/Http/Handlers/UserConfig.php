@@ -81,7 +81,7 @@ class UserConfig
         $this->usersPresenter->getUserProviderConfigService()->setUser($user);
 
         $areaProvider = $this->twoFactorProviderService->getAreaProvider($user->roles()->first()->area);
-        $item = $this->usersPresenter->index($user, $areaProvider);
+        $item         = $this->usersPresenter->index($user, $areaProvider);
 
         $form->extend(function(FormGrid $form) use($item) {
             $fieldsetName = trans('antares/two_factor_auth::configuration.index');
@@ -90,11 +90,12 @@ class UserConfig
                 $fieldset->legend(trans('antares/two_factor_auth::configuration.two_factor_auth'));
 
                 $fieldset->control('input:text', '', function($control) use($item) {
-                    $control->field(function() use($item) {
-                        return $item;
-                    });
-                })
-                ->label(trans('antares/two_factor_auth::users.manage_two_factor_auth_for_user'));
+                            $control->field(function() use($item) {
+                                return $item;
+                            });
+                        })
+                        ->label(trans('antares/two_factor_auth::users.manage_two_factor_auth_for_user'))
+                        ->wrapper(['class' => 'col-mb-16 col-18 col-dt-10 col-ld-4 mt6']);
             });
         });
     }
