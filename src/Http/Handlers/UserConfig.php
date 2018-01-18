@@ -83,6 +83,10 @@ class UserConfig
         $areaProvider = $this->twoFactorProviderService->getAreaProvider($user->roles()->first()->area);
         $item         = $this->usersPresenter->index($user, $areaProvider);
 
+        if($item === null) {
+            return;
+        }
+
         $form->extend(function(FormGrid $form) use($item) {
             $fieldsetName = trans('antares/two_factor_auth::configuration.index');
 
